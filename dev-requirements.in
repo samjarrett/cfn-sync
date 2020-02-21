@@ -1,0 +1,6 @@
+-e .
+pylint
+black
+pytest
+pytest-cov
+mypy
