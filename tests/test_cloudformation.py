@@ -2,7 +2,7 @@
 import pytest
 from botocore.exceptions import ClientError  # type: ignore
 
-from cfn_deploy import cloudformation
+from cfn_sync import cloudformation
 from .stubs import (
     stub_describe_stack,
     stub_describe_stack_error,

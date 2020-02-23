@@ -2,5 +2,5 @@
 .eggs
 .mypy_cache
 .pytest_cache
-cfn_deploy.egg-info
+cfn_sync.egg-info
 htmlcov

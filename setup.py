@@ -7,12 +7,12 @@ from setuptools import setup, find_packages
 if __name__ == "__main__":
     with open("requirements.txt") as requirements, open("README.md") as readme:
         setup(
-            name="cfn-deploy",
+            name="cfn-sync",
             use_scm_version=True,
-            description="Deploy CloudFormation stacks and watch the events",
+            description="Deploy CloudFormation stacks synchronously and watch the events",
             author="Sam Jarrett",
             author_email="sam@samjarrett.com.au",
-            url="https://github.com/samjarrett/cfn-deploy",
+            url="https://github.com/samjarrett/cfn-sync",
             long_description=readme.read(),
             classifiers=[
                 "License :: OSI Approved :: MIT License",
@@ -24,7 +24,7 @@ if __name__ == "__main__":
             ],
             packages=find_packages(exclude=["tests"]),
             include_package_data=True,
-            entry_points={"console_scripts": ["cfn-deploy = cfn_deploy:main"]},
+            entry_points={"console_scripts": ["cfn-sync = cfn_sync:main"]},
             setup_requires=["setuptools >= 18.0", "setuptools_scm"],
             install_requires=requirements.readlines(),
             test_suite="tests",

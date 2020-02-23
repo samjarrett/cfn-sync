@@ -16,10 +16,10 @@ before_install:
   - pip install -r dev-requirements.txt
 
 script:
-  - pytest --cov cfn_deploy
-  - pylint cfn_deploy tests setup.py
-  - black -c cfn_deploy tests setup.py
-  - mypy cfn_deploy
+  - pytest --cov stackup
+  - pylint cfn_sync tests setup.py
+  - black -c cfn_sync tests setup.py
+  - mypy cfn_sync
 
 deploy:
   provider: pypi
