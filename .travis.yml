@@ -1,0 +1,18 @@
+language: python
+
+python:
+  - '3.6'
+  - '3.7'
+  - '3.8'
+
+cache:
+  - pip
+
+before_install:
+  - pip install -U pip setuptools
+  - pip install -r dev-requirements.txt
+
+script:
+  - pytest --cov cfn_deploy
+  - pylint cfn_deploy tests setup.py
+  - black -c cfn_deploy tests setup.py
