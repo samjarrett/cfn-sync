@@ -16,3 +16,4 @@ script:
   - pytest --cov cfn_deploy
   - pylint cfn_deploy tests setup.py
   - black -c cfn_deploy tests setup.py
+  - mypy cfn_deploy
