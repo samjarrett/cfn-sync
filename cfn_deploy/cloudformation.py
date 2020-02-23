@@ -2,7 +2,7 @@ import logging
 import time
 from typing import Dict, Optional
 
-from mypy_boto3.cloudformation import CloudFormationClient
+from mypy_boto3_cloudformation import CloudFormationClient
 from botocore.exceptions import ClientError  # type: ignore
 
 
