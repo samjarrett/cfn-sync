@@ -23,7 +23,7 @@ script:
 
 deploy:
   provider: pypi
-  user: sdmj
+  user: "__token__"
   password:
     secure: oSY9w7r6tCz+NgNA5obfO4Q3fUkkKAwIXv1ggbkf/m0ZQ+Qgn0nBSfig9od3qqIe08T57ip2/ngojm26TpFfKNwspljq6/IefEduzIEVSsmWyxhjnmnsOhNvaufM/Mwt2ERUgKr0poYZjCiI3SWS+Rs/ZB35dH9U+ZGyJ3P+tlTnzLU9vYid0SLbMjRy1RqqTdisJ/ht0fq6xkdmrDQ3ohBaWZL1FzJ2pG99Gz47MitBUXxt5M+F1L/i5EWSWPlMGitA0vgcKyCIdo+Xou/q1DJ2/gONmI5lNSL4cQci+dbSKNbxuoovQefcJY0+4qhs3n2iVvPMrWdVLdciRxHmgOP5CE62gZcH4QMSD6NLlUP9LnGCp9zFDv9UTT7W3xW/OAOvOa1ajkoWRePOfZAzRBtOSxxMmCgSd9AH9HWOtYU8vV/K6ojRnfhKnT/HTF7Bwbw5glWbxl+26BA96okThYVZGkXf75oAmLgLMf4+AJC9L/BAnAlIQrN2b/l76G9/Y78wtDyPAJaCecxRRejsfeNITsN6sHVkE1wckhzMUsbhSOz5P4LY+vO6ncwEgGBtY9Iwqh6GHHuDyUQ1qYpLhMtv2q2YREeBARuJ8wbypFILqopdz1voWXQkH2UmmxW4n/YCw8WyY+GzmP4lxb1/YVDX6xg/wsGue3r+NxeDFuo=
   on:
