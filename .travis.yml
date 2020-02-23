@@ -5,6 +5,10 @@ python:
   - '3.7'
   - '3.8'
 
+env:
+  global:
+    - AWS_DEFAULT_REGION=ap-southeast-2
+
 cache:
   - pip
 
