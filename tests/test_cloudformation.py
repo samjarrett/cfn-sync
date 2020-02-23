@@ -10,6 +10,8 @@ from .stubs import (
     stub_create_stack_error,
     stub_update_stack,
     stub_update_stack_error,
+    stub_delete_stack,
+    stub_delete_stack_error,
     stub_describe_stack_events,
 )
 from .conftest import StubbedClient
@@ -26,6 +28,7 @@ def test_status(fake_cloudformation_client: StubbedClient, stack: cloudformation
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     assert stack.status == "UPDATE_COMPLETE"
 
+    # Subsequent calls use the ID
     stub_describe_stack(
         fake_cloudformation_client.stub, "MyStack", "UPDATE_ROLLBACK_COMPLETE"
     )
@@ -67,36 +70,34 @@ def test_exists_different_error(
 
 
 def test_deploy_update_success(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
 ):
     """Tests Stack.deploy() update successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_update_stack(
         fake_cloudformation_client.stub,
         "MyStack",
-        "https://s3.amazonaws.com/my-path/template.yml",
+        demo_template,
         [{"ParameterKey": "Hello", "ParameterValue": "You"}],
         [{"Key": "MyTag", "Value": "TagValue"}],
     )
     stack.deploy(
-        "https://s3.amazonaws.com/my-path/template.yml",
-        {"Hello": "You"},
-        {"MyTag": "TagValue"},
-        False,
+        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
     )
 
 
-def test_deploy_update_errors(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+def test_deploy_update_failure(
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
 ):
     """Tests Stack.deploy() update failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_update_stack_error(fake_cloudformation_client.stub)
     stack.deploy(
-        "https://s3.amazonaws.com/my-path/template.yml",
-        {"Hello": "You"},
-        {"MyTag": "TagValue"},
-        False,
+        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
     )
 
     # Test some other kind of error
@@ -104,15 +105,14 @@ def test_deploy_update_errors(
     stub_update_stack_error(fake_cloudformation_client.stub, "Template invalid")
     with pytest.raises(ClientError):
         stack.deploy(
-            "https://s3.amazonaws.com/my-path/template.yml",
-            {"Hello": "You"},
-            {"MyTag": "TagValue"},
-            False,
+            demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
         )
 
 
 def test_deploy_create_success(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
 ):
     """Tests Stack.deploy() create successful cases"""
     stub_describe_stack_error(
@@ -121,20 +121,19 @@ def test_deploy_create_success(
     stub_create_stack(
         fake_cloudformation_client.stub,
         "MyStack",
-        "https://s3.amazonaws.com/my-path/template.yml",
+        demo_template,
         [{"ParameterKey": "Hello", "ParameterValue": "You"}],
         [{"Key": "MyTag", "Value": "TagValue"}],
     )
     stack.deploy(
-        "https://s3.amazonaws.com/my-path/template.yml",
-        {"Hello": "You"},
-        {"MyTag": "TagValue"},
-        False,
+        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
     )
 
 
-def test_deploy_create_errors(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+def test_deploy_create_failure(
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
 ):
     """Tests Stack.deploy() update failure cases"""
     stub_describe_stack_error(
@@ -143,57 +142,112 @@ def test_deploy_create_errors(
     stub_create_stack_error(fake_cloudformation_client.stub, "Template invalid")
     with pytest.raises(ClientError):
         stack.deploy(
-            "https://s3.amazonaws.com/my-path/template.yml",
-            {"Hello": "You"},
-            {"MyTag": "TagValue"},
-            False,
+            demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
         )
 
 
-def test_deploy_wait_success(
+def test_delete_success(
     fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+):
+    """Tests Stack.delete() successful cases"""
+    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
+    stub_delete_stack(fake_cloudformation_client.stub, "MyStack")
+    stack.delete(False)
+
+
+def test_delete_failure(
+    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+):
+    """Tests Stack.delete() failure cases"""
+    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
+    stub_delete_stack_error(fake_cloudformation_client.stub, "Can not delete")
+    with pytest.raises(ClientError):
+        stack.delete(False)
+
+
+def test_delete_wait_success(
+    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+):
+    """Tests Stack.delete(wait=True) successful cases"""
+    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
+    stub_delete_stack(fake_cloudformation_client.stub, "MyStack")
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "DELETE_COMPLETE", True
+    )
+    stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack", True)
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "DELETE_COMPLETE", True
+    )
+    stack.delete(True)
+
+
+def test_delete_wait_failure(
+    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+):
+    """Tests Stack.delete(wait=True) failure cases"""
+    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
+    stub_delete_stack(fake_cloudformation_client.stub, "MyStack")
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE", True
+    )
+    stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack", True)
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "DELETE_FAILED", True
+    )
+    with pytest.raises(Exception):
+        stack.delete(True)
+
+
+def test_deploy_wait_success(
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
 ):
     """Tests Stack.deploy(wait=True) successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_update_stack(
         fake_cloudformation_client.stub,
         "MyStack",
-        "https://s3.amazonaws.com/my-path/template.yml",
+        demo_template,
         [{"ParameterKey": "Hello", "ParameterValue": "You"}],
         [{"Key": "MyTag", "Value": "TagValue"}],
     )
-    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
-    stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
-    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE", True
+    )
+    stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack", True)
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE", True
+    )
     stack.deploy(
-        "https://s3.amazonaws.com/my-path/template.yml",
-        {"Hello": "You"},
-        {"MyTag": "TagValue"},
-        True,
+        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True,
     )
 
 
 def test_deploy_wait_failure(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
 ):
     """Tests Stack.deploy(wait=True) failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_update_stack(
         fake_cloudformation_client.stub,
         "MyStack",
-        "https://s3.amazonaws.com/my-path/template.yml",
+        demo_template,
         [{"ParameterKey": "Hello", "ParameterValue": "You"}],
         [{"Key": "MyTag", "Value": "TagValue"}],
     )
-    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
-    stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
-    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "ROLLBACK_COMPLETE")
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE", True
+    )
+    stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack", True)
+    stub_describe_stack(
+        fake_cloudformation_client.stub, "MyStack", "ROLLBACK_COMPLETE", True
+    )
     with pytest.raises(Exception):
         stack.deploy(
-            "https://s3.amazonaws.com/my-path/template.yml",
-            {"Hello": "You"},
-            {"MyTag": "TagValue"},
-            True,
+            demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True,
         )
 
 
@@ -212,5 +266,3 @@ def test_wait_success(
     stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
     stack.wait()
-
-    print("done")

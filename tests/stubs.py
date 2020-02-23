@@ -5,6 +5,14 @@ import uuid
 from botocore.stub import ANY
 
 
+def generate_stack_id(stack_name: str) -> str:
+    """Generate a stack ID from the stack name"""
+    return (
+        f"arn:aws:cloudformation:ap-southeast-2:123456789012:stack/{stack_name}/"
+        "bd6129c0-de8c-11e9-9c70-0ac26335768c"
+    )
+
+
 def stub_get_parameter_value(
     stubber, name: str, value: str, version: int = 1, param_type: str = "String",
 ):
@@ -70,19 +78,28 @@ def stub_add_tags_to_resource(stubber, name: str, tags: List[Dict]):
     )
 
 
-def stub_describe_stack(stubber, stack_name: str, status: str):
+def stub_describe_stack(
+    stubber, stack_name: str, status: str, use_stack_id: bool = False
+):
     """Stubs CloudFormation describe_stacks responses"""
+    stack_id = generate_stack_id(stack_name)
     response = {
         "Stacks": [
             {
                 "StackName": stack_name,
+                "StackId": stack_id,
                 "StackStatus": status,
                 "CreationTime": datetime(2020, 1, 1),
             }
         ]
     }
+
+    stack_name_param = stack_name
+    if use_stack_id:
+        stack_name_param = stack_id
+
     stubber.add_response(
-        "describe_stacks", response, expected_params={"StackName": stack_name,},
+        "describe_stacks", response, expected_params={"StackName": stack_name_param},
     )
 
 
@@ -103,21 +120,18 @@ def stub_describe_stack_error(
 def stub_update_stack(
     stubber,
     stack_name: str,
-    template_url: str,
+    template_body: str,
     parameters: List[Dict],
     tags: List[Dict],
 ):
     """Stubs CloudFormation update_stack responses"""
-    response = {
-        "StackId": f"arn:aws:cloudformation:ap-southeast-2:123456789012:stack/{stack_name}/"
-        "bd6129c0-de8c-11e9-9c70-0ac26335768c"
-    }
+    response = {"StackId": generate_stack_id(stack_name)}
     stubber.add_response(
         "update_stack",
         response,
         expected_params={
             "StackName": stack_name,
-            "TemplateURL": template_url,
+            "TemplateBody": template_body,
             "Parameters": parameters,
             "Tags": tags,
         },
@@ -136,7 +150,7 @@ def stub_update_stack_error(
         expected_params={
             "StackName": ANY,
             "Parameters": ANY,
-            "TemplateURL": ANY,
+            "TemplateBody": ANY,
             "Tags": ANY,
         },
     )
@@ -145,21 +159,18 @@ def stub_update_stack_error(
 def stub_create_stack(
     stubber,
     stack_name: str,
-    template_url: str,
+    template_body: str,
     parameters: List[Dict],
     tags: List[Dict],
 ):
     """Stubs CloudFormation create_stack responses"""
-    response = {
-        "StackId": f"arn:aws:cloudformation:ap-southeast-2:123456789012:stack/{stack_name}/"
-        "bd6129c0-de8c-11e9-9c70-0ac26335768c"
-    }
+    response = {"StackId": generate_stack_id(stack_name)}
     stubber.add_response(
         "create_stack",
         response,
         expected_params={
             "StackName": stack_name,
-            "TemplateURL": template_url,
+            "TemplateBody": template_body,
             "Parameters": parameters,
             "Tags": tags,
         },
@@ -176,15 +187,34 @@ def stub_create_stack_error(stubber, error_message: str):
         expected_params={
             "StackName": ANY,
             "Parameters": ANY,
-            "TemplateURL": ANY,
+            "TemplateBody": ANY,
             "Tags": ANY,
         },
     )
 
 
-def stub_describe_stack_events(stubber, stack_name: str):
+def stub_delete_stack(stubber, stack_name: str):
+    """Stubs CloudFormation delete_stack responses"""
+    stubber.add_response(
+        "delete_stack", {}, expected_params={"StackName": stack_name},
+    )
+
+
+def stub_delete_stack_error(stubber, error_message: str):
+    """Stubs CloudFormation delete_stack responses when an error occurs"""
+    stubber.add_client_error(
+        "delete_stack",
+        "ClientError",
+        error_message,
+        400,
+        expected_params={"StackName": ANY},
+    )
+
+
+def stub_describe_stack_events(stubber, stack_name: str, use_stack_id: bool = False):
     """Stubs CloudFormation describe_stack_events responses"""
-    stack_id = f"arn:aws:cloudformation:ap-southeast-2:123456789012:stack/{stack_name}/{uuid.uuid4()}"
+    stack_id = generate_stack_id(stack_name)
+
     response = {
         "StackEvents": [
             {
@@ -206,6 +236,13 @@ def stub_describe_stack_events(stubber, stack_name: str):
             },
         ]
     }
+
+    stack_name_param = stack_name
+    if use_stack_id:
+        stack_name_param = stack_id
+
     stubber.add_response(
-        "describe_stack_events", response, expected_params={"StackName": ANY,},
+        "describe_stack_events",
+        response,
+        expected_params={"StackName": stack_name_param},
     )

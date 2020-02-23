@@ -22,9 +22,8 @@ def fake_cloudformation_client() -> StubbedClient:
 
 
 @pytest.yield_fixture
-def fake_ssm_client():
-    """Creates a stubbed boto3 SSM client"""
-    ssm = boto3.client("ssm")
-    with Stubber(ssm) as stubbed_client:
-        yield StubbedClient(stubbed_client, ssm)
-        stubbed_client.assert_no_pending_responses()
+def demo_template():
+    """Returns the contents of demo.yml"""
+    dirname = os.path.dirname(__file__)
+    with open(f"{dirname}/demo.yml", "r") as template_file:
+        yield template_file.read()

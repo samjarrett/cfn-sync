@@ -1,8 +1,17 @@
 import argparse
 from collections import ChainMap
+from copy import copy
+from io import TextIOWrapper
+import logging
+from typing import List
+
+import boto3
+
+from .cloudformation import Stack
 
 
 def split_key_equals_value(value: str):
+    """Split key=value strings into a dictionary of key: value"""
     if "=" not in value:
         raise Exception("Format is KEY=VALUE")
 
@@ -10,16 +19,25 @@ def split_key_equals_value(value: str):
     return {separated[0]: separated[1]}
 
 
-def deploy(namespace: argparse.Namespace):
-    print("running deploy")
+def deploy(stack: Stack, template_file: TextIOWrapper, parameters: List, tags: List):
+    """Deploy the CloudFormation stack"""
+    parameter_dict = dict(ChainMap(*parameters))
+    tag_dict = dict(ChainMap(*tags))
+
+    stack.deploy(template_file.read(), parameter_dict, tag_dict)
 
 
-def delete(namespace: argparse.Namespace):
-    print("running delete")
+def delete(stack: Stack):
+    """Delete the CloudFormation stack"""
+    stack.delete()
 
 
 def main():
     """The main CLI entrypoint"""
+    logging.basicConfig(
+        datefmt="%Y-%m-%d %H:%M", format="[%(asctime)s] %(levelname)-2s: %(message)s"
+    )
+
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(
         required=True,
@@ -39,12 +57,13 @@ def main():
     )
     parser_deploy.add_argument(
         "--template-file",
-        type=str,
+        type=argparse.FileType("r"),
         help="The path where your AWS CloudFormation template is located.",
         required=True,
     )
     parser_deploy.add_argument(
         "--parameter-overrides",
+        dest="parameters",
         nargs="+",
         type=split_key_equals_value,
         help="A list of parameter structures that specify input parameters for your stack template. If you're updating"
@@ -52,25 +71,35 @@ def main():
         " must specify parameters that don't have a default value. Syntax: ParameterKey1=ParameterValue1"
         " ParameterKey2=ParameterValue2",
         metavar="ParameterKey=ParameterValue",
+        default=[],
     )
     parser_deploy.add_argument(
         "--tags",
         nargs="+",
-        type=str,
+        type=split_key_equals_value,
         help="A list of tags to associate with the stack that is created or updated. AWS CloudFormation also propagates"
         " these tags to resources in the stack if the resource supports it. Syntax:TagKey1=TagValue1 TagKey2=TagValue2",
         metavar="TagKey=TagValue",
+        default=[],
     )
 
     parser_delete = subparsers.add_parser("delete", help="Delete CloudFormation stack")
     parser_delete.set_defaults(func=delete)
-    parser_delete.add_argument("stack_name", type=int, help="stack name")
+    parser_delete.add_argument(
+        "--stack-name",
+        type=str,
+        help="The name or the unique stack ID that is associated with the stack.",
+        required=True,
+    )
 
-    args = parser.parse_args()
+    args = vars(parser.parse_args())
 
-    print(args)
+    func = args.pop("func")
+    stack_name = args.pop("stack_name")
 
-    args.func(args)
+    stack = Stack(boto3.client("cloudformation"), stack_name)
+
+    func(stack=stack, **args)
 
 
 if __name__ == "__main__":  # pragma: no cover

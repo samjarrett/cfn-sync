@@ -1,0 +1,11 @@
+Parameters:
+  MyParam:
+    Type: String
+
+  EmptyParam:
+    Type: String
+    Default: "No Value"
+
+Resources:
+  Empty:
+    Type: AWS::CloudFormation::WaitConditionHandle
