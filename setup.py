@@ -5,7 +5,7 @@ Setup script.
 from setuptools import setup, find_packages
 
 if __name__ == "__main__":
-    with open("requirements.in") as requirements, open("README.md") as readme:
+    with open("requirements.in") as requirements, open("README.rst") as readme:
         setup(
             name="cfn-sync",
             use_scm_version=True,
