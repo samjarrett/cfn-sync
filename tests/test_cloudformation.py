@@ -83,9 +83,26 @@ def test_deploy_update_success(
         [{"ParameterKey": "Hello", "ParameterValue": "You"}],
         [{"Key": "MyTag", "Value": "TagValue"}],
     )
-    stack.deploy(
-        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
+    stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False)
+
+
+def test_deploy_update_capabilities_success(
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+    demo_template: str,
+):
+    """Tests Stack.deploy() update successful cases"""
+    stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
+    stub_update_stack(
+        fake_cloudformation_client.stub,
+        "MyStack",
+        demo_template,
+        [{"ParameterKey": "Hello", "ParameterValue": "You"}],
+        [{"Key": "MyTag", "Value": "TagValue"}],
+        ["CAPABILITY_IAM"],
     )
+    stack.set_capabilities(["CAPABILITY_IAM"])
+    stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False)
 
 
 def test_deploy_update_failure(
@@ -96,17 +113,13 @@ def test_deploy_update_failure(
     """Tests Stack.deploy() update failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_update_stack_error(fake_cloudformation_client.stub)
-    stack.deploy(
-        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
-    )
+    stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False)
 
     # Test some other kind of error
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_update_stack_error(fake_cloudformation_client.stub, "Template invalid")
     with pytest.raises(ClientError):
-        stack.deploy(
-            demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
-        )
+        stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False)
 
 
 def test_deploy_create_success(
@@ -141,9 +154,7 @@ def test_deploy_create_failure(
     )  # to trigger create workflow
     stub_create_stack_error(fake_cloudformation_client.stub, "Template invalid")
     with pytest.raises(ClientError):
-        stack.deploy(
-            demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
-        )
+        stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False)
 
 
 def test_delete_success(
@@ -219,9 +230,7 @@ def test_deploy_wait_success(
     stub_describe_stack(
         fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE", True
     )
-    stack.deploy(
-        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True,
-    )
+    stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True)
 
 
 def test_deploy_wait_failure(
@@ -246,9 +255,7 @@ def test_deploy_wait_failure(
         fake_cloudformation_client.stub, "MyStack", "ROLLBACK_COMPLETE", True
     )
     with pytest.raises(Exception):
-        stack.deploy(
-            demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True,
-        )
+        stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True)
 
 
 def test_wait_success(

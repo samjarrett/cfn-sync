@@ -1,10 +1,9 @@
 import logging
 import time
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from mypy_boto3_cloudformation import CloudFormationClient
 from botocore.exceptions import ClientError  # type: ignore
-
 
 IN_PROGRESS_STACK_STATUSES = [
     "CREATE_IN_PROGRESS",
@@ -51,6 +50,7 @@ class Stack:
 
     name: str
     id: Optional[str]
+    capabilities: Optional[List] = None
 
     def __init__(
         self, cloudformation: CloudFormationClient, name: str,
@@ -78,6 +78,10 @@ class Stack:
 
             raise exception
 
+    def set_capabilities(self, capabilities: List):
+        """Sets the capabilities to apply to the stack during deploy [create/update] actions"""
+        self.capabilities = capabilities
+
     def deploy(
         self, template_body: str, parameters: Dict, tags: Dict, wait: bool = True,
     ):
@@ -98,6 +102,7 @@ class Stack:
                     for key, value in parameters.items()
                 ],
                 Tags=[{"Key": key, "Value": value} for key, value in tags.items()],
+                Capabilities=self.capabilities or [],
             )
             self.id = response["StackId"]
         except ClientError as client_error:

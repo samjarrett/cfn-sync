@@ -16,11 +16,16 @@ pip install cfn-sync
 Deploying (creating or updating) a stack:
 
 ```bash
-cfn-sync deploy --stack-name <STACK NAME> [--parameter-overrides <Key=Value> [<Key=Value>...]] [--tags <Key=Value> [<Key=Value>...]]
+cfn-sync deploy \
+  --stack-name <STACK_NAME> \
+  --template-file <FILE_PATH> \
+  [--parameter-overrides <KEY=VALUE> [<KEY=VALUE>...]] \
+  [--tags <KEY=VALUE> [<KEY=VALUE>...]] \
+  [--capabilities <VALUE> [<VALUE>...]]
 ```
 
 Deleting a stack:
 
 ```bash
-cfn-sync delete --stack-name <STACK NAME>
+cfn-sync delete --stack-name <STACK_NAME>
 ```

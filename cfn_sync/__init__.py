@@ -3,9 +3,11 @@ from collections import ChainMap
 from copy import copy
 from io import TextIOWrapper
 import logging
+import sys
 from typing import List
 
 import boto3
+from botocore.exceptions import ClientError  # type: ignore
 
 from .cloudformation import Stack
 
@@ -19,10 +21,19 @@ def split_key_equals_value(value: str):
     return {separated[0]: separated[1]}
 
 
-def deploy(stack: Stack, template_file: TextIOWrapper, parameters: List, tags: List):
+def deploy(
+    stack: Stack,
+    template_file: TextIOWrapper,
+    parameters: List,
+    tags: List,
+    capabilities: List,
+):
     """Deploy the CloudFormation stack"""
     parameter_dict = dict(ChainMap(*parameters))
     tag_dict = dict(ChainMap(*tags))
+
+    if capabilities:
+        stack.set_capabilities(capabilities)
 
     stack.deploy(template_file.read(), parameter_dict, tag_dict)
 
@@ -82,6 +93,13 @@ def main():
         metavar="TagKey=TagValue",
         default=[],
     )
+    parser_deploy.add_argument(
+        "--capabilities",
+        nargs="+",
+        type=str,
+        help="A list of capabilities that you must specify before AWS Cloudformation can create certain stacks.",
+        default=[],
+    )
 
     parser_delete = subparsers.add_parser("delete", help="Delete CloudFormation stack")
     parser_delete.set_defaults(func=delete)
@@ -99,7 +117,11 @@ def main():
 
     stack = Stack(boto3.client("cloudformation"), stack_name)
 
-    func(stack=stack, **args)
+    try:
+        func(stack=stack, **args)
+
+    except ClientError as exception:
+        sys.exit(exception)
 
 
 if __name__ == "__main__":  # pragma: no cover

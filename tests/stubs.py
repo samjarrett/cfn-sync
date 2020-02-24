@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict, List, Optional
 from datetime import datetime
 import uuid
 
@@ -123,7 +123,8 @@ def stub_update_stack(
     template_body: str,
     parameters: List[Dict],
     tags: List[Dict],
-):
+    capabilities: Optional[List] = None,
+):  # pylint: disable=too-many-arguments
     """Stubs CloudFormation update_stack responses"""
     response = {"StackId": generate_stack_id(stack_name)}
     stubber.add_response(
@@ -134,6 +135,7 @@ def stub_update_stack(
             "TemplateBody": template_body,
             "Parameters": parameters,
             "Tags": tags,
+            "Capabilities": capabilities or [],
         },
     )
 
@@ -152,6 +154,7 @@ def stub_update_stack_error(
             "Parameters": ANY,
             "TemplateBody": ANY,
             "Tags": ANY,
+            "Capabilities": ANY,
         },
     )
 
@@ -162,7 +165,8 @@ def stub_create_stack(
     template_body: str,
     parameters: List[Dict],
     tags: List[Dict],
-):
+    capabilities: Optional[List] = None,
+):  # pylint: disable=too-many-arguments
     """Stubs CloudFormation create_stack responses"""
     response = {"StackId": generate_stack_id(stack_name)}
     stubber.add_response(
@@ -173,6 +177,7 @@ def stub_create_stack(
             "TemplateBody": template_body,
             "Parameters": parameters,
             "Tags": tags,
+            "Capabilities": capabilities or [],
         },
     )
 
@@ -189,6 +194,7 @@ def stub_create_stack_error(stubber, error_message: str):
             "Parameters": ANY,
             "TemplateBody": ANY,
             "Tags": ANY,
+            "Capabilities": ANY,
         },
     )
 
