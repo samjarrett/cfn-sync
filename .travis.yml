@@ -8,6 +8,9 @@ python:
 env:
   global:
     - AWS_DEFAULT_REGION=ap-southeast-2
+    - DOCKER_REPO=samjarrett/cfn-sync
+    - secure: "uZazcGVJFIUvzadFYeRExZOtFgknGniqz96SDQMD6sI2EcWN5diJpZCfSELJtKoSbLYt/04oN6tqW9YauiUq2Jsog4evBn7G7I1NPEW+GGY//R05SKPztgipenDmoTIKdFvAzZrzmRX4nXfleBqlgxa1MOsBg+LWsyxiLxo2nJe77RM289a7GjYEvoopLywdiRBGAtX5MebjmI8PLeQP+3h8luBSlOOg96vAVcv4/qF5ktNnK3NU/oGh6pfUUDYY7rFBU1FWf2EyoD+mDXk+thog/YUNXiTnjhJdeQ+0DpiFLU/J2YcNOjadkNuOd9bxFmwrQoWjXHkDKWCrYpWl3xuR+A3/GRNbgATyczgtk+05H1ooXLrvNyFXtgwhRnrgAR2rusMqzvcYUP84A+JnwlSeMCMPgOVKluUUrL67MCkmSh+Lm46XujMXUClwaxz5u+U1ksFFhUUFsy2nb78CVCyS1BA/NIxFd3zvvJ4L33MbQdkMhdRJ4xGdzU6XNb+mPaaDqkjgFMPe7F8zcwOjpGPWVdyTjc7eQRvSvMvIlBU8kN2stz3PLIUEuDOvMxdxD38OnG2i4o/fM1GODIK1T1itHqSdkydYBgaHo6OjaWtc9cH+rLZPuIOe8XOV1yHemT2LkmbnvtMpRpizA2Zlf3rvNtExu1snd2GZCTTMLUU="
+    - secure: "S24HTcEJPO1xKBCLdFDvG+kUpU3KGdQ1khjX7QUlGTNVX/HMUH8FaC/yJXgXDpKHwbrqE1AAWYACeB+Jp5se8uDXnJJQxUjhj3E/C62ExB2WVERh62ZfTP97bb3WkUSTePtmd9rENX7roJmCWERXsSa/fsaGcqgzRm/hg1Nnc6LELEmEb0xP7dcHd78hc8SOZjvPO8C2QiKA4qxxd3xN1PqxSYwFhhI70bgGuCmCIFrnzPs+3yKOZ7IBBoqwvb2YEPoSSi3jQi5/9UhWdeE6b08SdKXwpG4lPmtevWwy0xVY/FzYT2Oj+sCkrDpFZaHhFZXGvccff1diW476z8Rh8T2KuLrm+CrmsiQUKlKiA8hKRWnuZ6+qxo3ci14qeVvWevah6WBCQeHFPiyg6rQP9uA14sZqg8KlTELcHqBphpjsPfBsvjC6ujFVmXrSgmGYU/ym52KYtuhd3wDYdxFkVMi8/nKRAyONv6chmAE7BvD7/7cUNWE1fI5g2ofWRh+CYKsoR5wchNw1e6Bu1T/aFoHUPrsKUN/NxbKbExUz1tfxu5zKZjH8tDL8to7u6NADsPUqBZaylEz6BirMgFGRJcgHj1UR5Fxs6Oh7LEYqMdyAWpzUsXBVgHoPgmK+lTQH6L5D/I1+M99tMLJ6K9NjLmPPArBmQ4Tv4vuBD6cfj0g="
 
 cache:
   - pip
@@ -29,3 +32,10 @@ deploy:
   on:
     tags: true
     python: 3.8
+
+after_deploy:
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  - docker build --build-arg CFN_SYNC_VERSION=${TRAVIS_TAG} --tag "${DOCKER_REPO}:${TRAVIS_TAG}" .
+  - docker push "${DOCKER_REPO}:${TRAVIS_TAG}"
+  - docker tag "${DOCKER_REPO}:${TRAVIS_TAG}" "${DOCKER_REPO}:latest"
+  - docker push "${DOCKER_REPO}:latest"

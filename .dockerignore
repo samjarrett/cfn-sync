@@ -1,0 +1,9 @@
+venv
+.coverage
+.eggs
+.mypy_cache
+.pytest_cache
+cfn_sync.egg-info
+htmlcov
+.DS_Store
+__pycache__
