@@ -19,7 +19,7 @@ before_install:
   - pip install -r dev-requirements.txt
 
 script:
-  - pytest --cov stackup
+  - pytest --cov cfn_sync
   - pylint cfn_sync tests setup.py
   - black -c cfn_sync tests setup.py
   - mypy cfn_sync
