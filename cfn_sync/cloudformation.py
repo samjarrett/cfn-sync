@@ -6,8 +6,11 @@ from botocore.exceptions import ClientError  # type: ignore
 
 if TYPE_CHECKING:  # pragma: no cover
     from mypy_boto3_cloudformation.client import CloudFormationClient
+    from mypy_boto3_cloudformation.type_defs import ParameterTypeDef, TagTypeDef
 else:
     CloudFormationClient = object
+    ParameterTypeDef = object
+    TagTypeDef = object
 
 IN_PROGRESS_STACK_STATUSES = frozenset(
     {
@@ -47,6 +50,19 @@ def log_event(
 def log(message: str):
     """Logs a general message"""
     logger.info(message)
+
+
+def parameter_dict_to_list(parameters: Dict[str, str]) -> List[ParameterTypeDef]:
+    """Convert parameter dictionary to CloudFormation's list[dict] format"""
+    return [
+        {"ParameterKey": key, "ParameterValue": value}
+        for key, value in parameters.items()
+    ]
+
+
+def tag_dict_to_list(tags: Dict[str, str]) -> List[TagTypeDef]:
+    """Convert parameter dictionary to CloudFormation's list[dict] format"""
+    return [{"Key": key, "Value": value} for key, value in tags.items()]
 
 
 class Stack:
@@ -110,11 +126,8 @@ class Stack:
             response = method(
                 StackName=self.name,
                 TemplateBody=template_body,
-                Parameters=[
-                    {"ParameterKey": key, "ParameterValue": value}
-                    for key, value in parameters.items()
-                ],
-                Tags=[{"Key": key, "Value": value} for key, value in tags.items()],
+                Parameters=parameter_dict_to_list(parameters),
+                Tags=tag_dict_to_list(tags),
                 Capabilities=self.capabilities or [],
             )
             self.id = response["StackId"]

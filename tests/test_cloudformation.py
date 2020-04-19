@@ -26,6 +26,52 @@ def stack(fake_cloudformation_client: StubbedClient) -> cloudformation.Stack:
     return cloudformation.Stack(fake_cloudformation_client.client, "MyStack")
 
 
+def test_parameter_dict_to_list():
+    """Tests cloudformation.parameter_dict_to_list()"""
+    parameter_dict = {
+        "ParamOne": "value1",
+        "ParamTwo": "value2",
+    }
+    parameter_list = [
+        {"ParameterKey": "ParamOne", "ParameterValue": "value1"},
+        {"ParameterKey": "ParamTwo", "ParameterValue": "value2"},
+    ]
+    assert cloudformation.parameter_dict_to_list(parameter_dict) == parameter_list
+
+    parameter_dict = {
+        "ParamThree": "value3",
+        "ParamTwo": "value2",
+    }
+    parameter_list = [
+        {"ParameterKey": "ParamThree", "ParameterValue": "value3"},
+        {"ParameterKey": "ParamTwo", "ParameterValue": "value2"},
+    ]
+    assert cloudformation.parameter_dict_to_list(parameter_dict) == parameter_list
+
+
+def test_tag_dict_to_list():
+    """Tests cloudformation.tag_dict_to_list()"""
+    tag_dict = {
+        "ParamOne": "value1",
+        "ParamTwo": "value2",
+    }
+    tag_list = [
+        {"Key": "ParamOne", "Value": "value1"},
+        {"Key": "ParamTwo", "Value": "value2"},
+    ]
+    assert cloudformation.tag_dict_to_list(tag_dict) == tag_list
+
+    parameter_dict = {
+        "ParamThree": "value3",
+        "ParamTwo": "value2",
+    }
+    parameter_list = [
+        {"ParameterKey": "ParamThree", "ParameterValue": "value3"},
+        {"ParameterKey": "ParamTwo", "ParameterValue": "value2"},
+    ]
+    assert cloudformation.parameter_dict_to_list(parameter_dict) == parameter_list
+
+
 def test_status(fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack):
     """Tests Stack.status"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
