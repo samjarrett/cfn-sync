@@ -63,6 +63,7 @@ def main():
         required=True,
         help="The action to perform on the CloudFormation stack",
         title="subcommands",
+        dest="action",
     )
 
     # create the parser for the "a" command
@@ -121,6 +122,7 @@ def main():
 
     args = vars(parser.parse_args())
 
+    args.pop("action")
     func = args.pop("func")
     stack_name = args.pop("stack_name")
 
@@ -131,7 +133,3 @@ def main():
 
     except ClientError as exception:
         sys.exit(exception)
-
-
-if __name__ == "__main__":  # pragma: no cover
-    main()
