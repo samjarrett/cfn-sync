@@ -4,7 +4,7 @@ from copy import copy
 from io import TextIOWrapper
 import logging
 import sys
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import boto3
 from botocore.exceptions import ClientError  # type: ignore
@@ -19,7 +19,7 @@ class ParseDict(argparse.Action):
         self,
         parser: argparse.ArgumentParser,
         namespace: argparse.Namespace,
-        values: List[str],
+        values,
         option_string: Optional[str] = None,
     ):
         """Perform the parsing"""
@@ -36,8 +36,8 @@ class ParseDict(argparse.Action):
 def deploy(
     stack: Stack,
     template_file: TextIOWrapper,
-    parameters: List,
-    tags: List,
+    parameters: Dict[str, str],
+    tags: Dict[str, str],
     capabilities: List,
 ):
     """Deploy the CloudFormation stack"""
