@@ -3,18 +3,19 @@ import pytest
 from botocore.exceptions import ClientError  # type: ignore
 
 from cfn_sync import cloudformation
+
+from .conftest import StubbedClient
 from .stubs import (
-    stub_describe_stack,
-    stub_describe_stack_error,
     stub_create_stack,
     stub_create_stack_error,
-    stub_update_stack,
-    stub_update_stack_error,
     stub_delete_stack,
     stub_delete_stack_error,
+    stub_describe_stack,
+    stub_describe_stack_error,
     stub_describe_stack_events,
+    stub_update_stack,
+    stub_update_stack_error,
 )
-from .conftest import StubbedClient
 
 
 @pytest.fixture

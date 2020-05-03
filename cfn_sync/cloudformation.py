@@ -2,8 +2,8 @@ import logging
 import time
 from typing import Dict, List, Optional
 
-from mypy_boto3_cloudformation import CloudFormationClient
 from botocore.exceptions import ClientError  # type: ignore
+from mypy_boto3_cloudformation import CloudFormationClient
 
 IN_PROGRESS_STACK_STATUSES = frozenset(
     {

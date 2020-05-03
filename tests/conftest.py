@@ -1,8 +1,8 @@
 import os
 from collections import namedtuple
 
-import pytest
 import boto3
+import pytest
 from botocore.stub import Stubber
 
 # prevent boto from looking for IAM creds via metadata while running tests

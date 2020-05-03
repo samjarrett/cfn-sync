@@ -2,7 +2,7 @@
 Setup script.
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 if __name__ == "__main__":
     with open("requirements.in") as requirements, open("README.rst") as readme:

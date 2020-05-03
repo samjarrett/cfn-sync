@@ -1,6 +1,7 @@
 -r requirements.txt
-pylint<2.5.0
 black
+isort
+mypy
+pylint<2.5.0
 pytest
 pytest-cov
-mypy

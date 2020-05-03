@@ -1,9 +1,9 @@
 import argparse
+import logging
+import sys
 from collections import ChainMap
 from copy import copy
 from io import TextIOWrapper
-import logging
-import sys
 from typing import Dict, List, Optional
 
 import boto3
