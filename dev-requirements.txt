@@ -31,7 +31,7 @@ py==1.8.1                 # via pytest
 pylint==2.5.2             # via -r dev-requirements.in
 pyparsing==2.4.7          # via packaging
 pytest-cov==2.8.1         # via -r dev-requirements.in
-pytest==5.4.1             # via -r dev-requirements.in, pytest-cov
+pytest==5.4.2             # via -r dev-requirements.in, pytest-cov
 python-dateutil==2.8.1    # via -r requirements.txt, botocore
 regex==2020.4.4           # via black
 s3transfer==0.3.3         # via -r requirements.txt, boto3
