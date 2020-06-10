@@ -27,6 +27,5 @@ if __name__ == "__main__":
             entry_points={"console_scripts": ["cfn-sync = cfn_sync:main"]},
             setup_requires=["setuptools >= 18.0", "setuptools_scm"],
             install_requires=requirements.readlines(),
-            python_requires="3.6",
             test_suite="tests",
         )
