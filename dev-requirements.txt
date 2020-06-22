@@ -22,7 +22,7 @@ more-itertools==8.2.0     # via pytest
 mypy-boto3-cloudformation==1.12.41.0  # via -r requirements.txt, boto3-stubs
 mypy-boto3==1.12.41.0     # via -r requirements.txt, boto3-stubs
 mypy-extensions==0.4.3    # via mypy
-mypy==0.780               # via -r dev-requirements.in
+mypy==0.781               # via -r dev-requirements.in
 packaging==20.3           # via pytest
 pathspec==0.8.0           # via black
 pluggy==0.13.1            # via pytest
