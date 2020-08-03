@@ -14,6 +14,7 @@ botocore==1.17.20         # via -r requirements.txt, boto3, s3transfer
 click==7.1.2              # via black
 coverage==5.1             # via pytest-cov
 docutils==0.15.2          # via -r requirements.txt, botocore
+iniconfig==1.0.1          # via pytest
 isort==4.3.21             # via -r dev-requirements.in, pylint
 jmespath==0.9.5           # via -r requirements.txt, boto3, botocore
 lazy-object-proxy==1.4.3  # via astroid
@@ -26,18 +27,17 @@ mypy==0.782               # via -r dev-requirements.in
 packaging==20.3           # via pytest
 pathspec==0.8.0           # via black
 pluggy==0.13.1            # via pytest
-py==1.8.1                 # via pytest
+py==1.9.0                 # via pytest
 pylint==2.5.3             # via -r dev-requirements.in
 pyparsing==2.4.7          # via packaging
 pytest-cov==2.10.0        # via -r dev-requirements.in
-pytest==5.4.3             # via -r dev-requirements.in, pytest-cov
+pytest==6.0.1             # via -r dev-requirements.in, pytest-cov
 python-dateutil==2.8.1    # via -r requirements.txt, botocore
 regex==2020.4.4           # via black
 s3transfer==0.3.3         # via -r requirements.txt, boto3
 six==1.14.0               # via -r requirements.txt, astroid, packaging, python-dateutil
-toml==0.10.0              # via black, pylint
+toml==0.10.0              # via black, pylint, pytest
 typed-ast==1.4.1          # via black, mypy
 typing-extensions==3.7.4.2  # via mypy
 urllib3==1.25.9           # via -r requirements.txt, botocore
-wcwidth==0.1.9            # via pytest
 wrapt==1.11.2             # via astroid
