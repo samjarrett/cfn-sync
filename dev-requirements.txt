@@ -28,7 +28,7 @@ packaging==20.3           # via pytest
 pathspec==0.8.0           # via black
 pluggy==0.13.1            # via pytest
 py==1.9.0                 # via pytest
-pylint==2.5.3             # via -r dev-requirements.in
+pylint==2.6.0             # via -r dev-requirements.in
 pyparsing==2.4.7          # via packaging
 pytest-cov==2.10.1        # via -r dev-requirements.in
 pytest==6.0.1             # via -r dev-requirements.in, pytest-cov
