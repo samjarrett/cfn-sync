@@ -140,7 +140,10 @@ def test_deploy_create_success(
         [{"Key": "MyTag", "Value": "TagValue"}],
     )
     stack.deploy(
-        demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False,
+        demo_template,
+        {"Hello": "You"},
+        {"MyTag": "TagValue"},
+        False,
     )
 
 

@@ -14,7 +14,11 @@ def generate_stack_id(stack_name: str) -> str:
 
 
 def stub_get_parameter_value(
-    stubber, name: str, value: str, version: int = 1, param_type: str = "String",
+    stubber,
+    name: str,
+    value: str,
+    version: int = 1,
+    param_type: str = "String",
 ):
     """Stubs SSM get_parameter_value responses"""
     response = {
@@ -99,7 +103,9 @@ def stub_describe_stack(
         stack_name_param = stack_id
 
     stubber.add_response(
-        "describe_stacks", response, expected_params={"StackName": stack_name_param},
+        "describe_stacks",
+        response,
+        expected_params={"StackName": stack_name_param},
     )
 
 
@@ -202,7 +208,9 @@ def stub_create_stack_error(stubber, error_message: str):
 def stub_delete_stack(stubber, stack_name: str):
     """Stubs CloudFormation delete_stack responses"""
     stubber.add_response(
-        "delete_stack", {}, expected_params={"StackName": stack_name},
+        "delete_stack",
+        {},
+        expected_params={"StackName": stack_name},
     )
 
 
