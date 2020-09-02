@@ -52,7 +52,9 @@ class Stack:
     capabilities: Optional[List] = None
 
     def __init__(
-        self, cloudformation: CloudFormationClient, name: str,
+        self,
+        cloudformation: CloudFormationClient,
+        name: str,
     ):
         self.cloudformation = cloudformation
         self.name = name
@@ -82,7 +84,11 @@ class Stack:
         self.capabilities = capabilities
 
     def deploy(
-        self, template_body: str, parameters: Dict, tags: Dict, wait: bool = True,
+        self,
+        template_body: str,
+        parameters: Dict,
+        tags: Dict,
+        wait: bool = True,
     ):
         """Performs a create/update against the stack and optionally waits for it to stabilise"""
         try:

@@ -6,8 +6,8 @@
 #
 appdirs==1.4.3            # via black
 astroid==2.4.1            # via pylint
-attrs==19.3.0             # via black, pytest
-black==19.10b0            # via -r dev-requirements.in
+attrs==19.3.0             # via pytest
+black==20.8b1             # via -r dev-requirements.in
 boto3-stubs[cloudformation]==1.12.41.0  # via -r requirements.txt
 boto3==1.14.51            # via -r requirements.txt, mypy-boto3
 botocore==1.17.51         # via -r requirements.txt, boto3, s3transfer
@@ -22,7 +22,7 @@ mccabe==0.6.1             # via pylint
 more-itertools==8.2.0     # via pytest
 mypy-boto3-cloudformation==1.12.41.0  # via -r requirements.txt, boto3-stubs
 mypy-boto3==1.12.41.0     # via -r requirements.txt, boto3-stubs
-mypy-extensions==0.4.3    # via mypy
+mypy-extensions==0.4.3    # via black, mypy
 mypy==0.782               # via -r dev-requirements.in
 packaging==20.3           # via pytest
 pathspec==0.8.0           # via black
@@ -36,8 +36,8 @@ python-dateutil==2.8.1    # via -r requirements.txt, botocore
 regex==2020.4.4           # via black
 s3transfer==0.3.3         # via -r requirements.txt, boto3
 six==1.14.0               # via -r requirements.txt, astroid, packaging, python-dateutil
-toml==0.10.0              # via black, pylint, pytest
+toml==0.10.1              # via black, pylint, pytest
 typed-ast==1.4.1          # via black, mypy
-typing-extensions==3.7.4.2  # via mypy
+typing-extensions==3.7.4.2  # via black, mypy
 urllib3==1.25.9           # via -r requirements.txt, botocore
 wrapt==1.11.2             # via astroid
