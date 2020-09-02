@@ -14,4 +14,5 @@ mypy-boto3==1.12.41.0     # via boto3-stubs
 python-dateutil==2.8.1    # via botocore
 s3transfer==0.3.3         # via boto3
 six==1.14.0               # via python-dateutil
+typing-extensions==3.7.4.2  # via boto3-stubs, mypy-boto3, mypy-boto3-cloudformation
 urllib3==1.25.9           # via botocore

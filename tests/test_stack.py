@@ -1,8 +1,10 @@
 # pylint:disable=redefined-outer-name
+from unittest.mock import patch, MagicMock
+
 import pytest
 from botocore.exceptions import ClientError  # type: ignore
 
-from cfn_sync import cloudformation
+from cfn_sync.stack import Stack, tag_dict_to_list, parameter_dict_to_list
 
 from .conftest import StubbedClient
 from .stubs import (
@@ -19,13 +21,13 @@ from .stubs import (
 
 
 @pytest.fixture
-def stack(fake_cloudformation_client: StubbedClient) -> cloudformation.Stack:
+def stack(fake_cloudformation_client: StubbedClient) -> Stack:
     """Create a Stack object"""
-    return cloudformation.Stack(fake_cloudformation_client.client, "MyStack")
+    return Stack(fake_cloudformation_client.client, "MyStack")
 
 
 def test_parameter_dict_to_list():
-    """Tests cloudformation.parameter_dict_to_list()"""
+    """Tests parameter_dict_to_list()"""
     parameter_dict = {
         "ParamOne": "value1",
         "ParamTwo": "value2",
@@ -34,7 +36,7 @@ def test_parameter_dict_to_list():
         {"ParameterKey": "ParamOne", "ParameterValue": "value1"},
         {"ParameterKey": "ParamTwo", "ParameterValue": "value2"},
     ]
-    assert cloudformation.parameter_dict_to_list(parameter_dict) == parameter_list
+    assert parameter_dict_to_list(parameter_dict) == parameter_list
 
     parameter_dict = {
         "ParamThree": "value3",
@@ -44,11 +46,11 @@ def test_parameter_dict_to_list():
         {"ParameterKey": "ParamThree", "ParameterValue": "value3"},
         {"ParameterKey": "ParamTwo", "ParameterValue": "value2"},
     ]
-    assert cloudformation.parameter_dict_to_list(parameter_dict) == parameter_list
+    assert parameter_dict_to_list(parameter_dict) == parameter_list
 
 
 def test_tag_dict_to_list():
-    """Tests cloudformation.tag_dict_to_list()"""
+    """Tests tag_dict_to_list()"""
     tag_dict = {
         "ParamOne": "value1",
         "ParamTwo": "value2",
@@ -57,20 +59,20 @@ def test_tag_dict_to_list():
         {"Key": "ParamOne", "Value": "value1"},
         {"Key": "ParamTwo", "Value": "value2"},
     ]
-    assert cloudformation.tag_dict_to_list(tag_dict) == tag_list
+    assert tag_dict_to_list(tag_dict) == tag_list
 
-    parameter_dict = {
+    tag_dict = {
         "ParamThree": "value3",
         "ParamTwo": "value2",
     }
-    parameter_list = [
-        {"ParameterKey": "ParamThree", "ParameterValue": "value3"},
-        {"ParameterKey": "ParamTwo", "ParameterValue": "value2"},
+    tag_list = [
+        {"Key": "ParamThree", "Value": "value3"},
+        {"Key": "ParamTwo", "Value": "value2"},
     ]
-    assert cloudformation.parameter_dict_to_list(parameter_dict) == parameter_list
+    assert tag_dict_to_list(tag_dict) == tag_list
 
 
-def test_status(fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack):
+def test_status(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.status"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     assert stack.status == "UPDATE_COMPLETE"
@@ -82,7 +84,7 @@ def test_status(fake_cloudformation_client: StubbedClient, stack: cloudformation
     assert stack.status == "UPDATE_ROLLBACK_COMPLETE"
 
 
-def test_exists(fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack):
+def test_exists(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.exists"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     assert stack.exists
@@ -96,16 +98,14 @@ def test_exists(fake_cloudformation_client: StubbedClient, stack: cloudformation
     assert stack.exists
 
 
-def test_exists_not_exists(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
-):
+def test_exists_not_exists(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.exists with an error message"""
     stub_describe_stack_error(fake_cloudformation_client.stub)
     assert not stack.exists
 
 
 def test_exists_different_error(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+    fake_cloudformation_client: StubbedClient, stack: Stack
 ):
     """Tests Stack.exists with a non-stack does not exist message"""
     stub_describe_stack_error(
@@ -117,9 +117,7 @@ def test_exists_different_error(
 
 
 def test_deploy_update_success(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy() update successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
@@ -134,9 +132,7 @@ def test_deploy_update_success(
 
 
 def test_deploy_update_capabilities_success(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy() update successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
@@ -153,9 +149,7 @@ def test_deploy_update_capabilities_success(
 
 
 def test_deploy_update_failure(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy() update failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
@@ -170,9 +164,7 @@ def test_deploy_update_failure(
 
 
 def test_deploy_create_success(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy() create successful cases"""
     stub_describe_stack_error(
@@ -191,9 +183,7 @@ def test_deploy_create_success(
 
 
 def test_deploy_create_failure(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy() update failure cases"""
     stub_describe_stack_error(
@@ -204,18 +194,14 @@ def test_deploy_create_failure(
         stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, False)
 
 
-def test_delete_success(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
-):
+def test_delete_success(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.delete() successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
     stub_delete_stack(fake_cloudformation_client.stub, "MyStack")
     stack.delete(False)
 
 
-def test_delete_failure(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
-):
+def test_delete_failure(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.delete() failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
     stub_delete_stack_error(fake_cloudformation_client.stub, "Can not delete")
@@ -223,9 +209,7 @@ def test_delete_failure(
         stack.delete(False)
 
 
-def test_delete_wait_success(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
-):
+def test_delete_wait_success(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.delete(wait=True) successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_delete_stack(fake_cloudformation_client.stub, "MyStack")
@@ -239,9 +223,7 @@ def test_delete_wait_success(
     stack.delete(True)
 
 
-def test_delete_wait_failure(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
-):
+def test_delete_wait_failure(fake_cloudformation_client: StubbedClient, stack: Stack):
     """Tests Stack.delete(wait=True) failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
     stub_delete_stack(fake_cloudformation_client.stub, "MyStack")
@@ -257,9 +239,7 @@ def test_delete_wait_failure(
 
 
 def test_deploy_wait_success(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy(wait=True) successful cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
@@ -281,9 +261,7 @@ def test_deploy_wait_success(
 
 
 def test_deploy_wait_failure(
-    fake_cloudformation_client: StubbedClient,
-    stack: cloudformation.Stack,
-    demo_template: str,
+    fake_cloudformation_client: StubbedClient, stack: Stack, demo_template: str,
 ):
     """Tests Stack.deploy(wait=True) failure cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "UPDATE_COMPLETE")
@@ -305,8 +283,9 @@ def test_deploy_wait_failure(
         stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True)
 
 
+@patch("time.sleep")
 def test_wait_success(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+    patched_sleep: MagicMock, fake_cloudformation_client: StubbedClient, stack: Stack,
 ):
     """Tests Stack.wait() success cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
@@ -320,3 +299,4 @@ def test_wait_success(
     stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
     stack.wait()
+    patched_sleep.assert_called_once()

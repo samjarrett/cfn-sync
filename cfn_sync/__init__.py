@@ -9,7 +9,7 @@ from typing import Dict, List, Optional
 import boto3
 from botocore.exceptions import ClientError  # type: ignore
 
-from .cloudformation import Stack
+from .stack import Stack
 
 
 class ParseDict(argparse.Action):

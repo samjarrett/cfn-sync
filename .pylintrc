@@ -32,6 +32,7 @@ good-names=i,
 [LOGGING]
 logging-format-style=new
 logging-modules=logging
+disable=logging-fstring-interpolation
 
 [DESIGN]
 
