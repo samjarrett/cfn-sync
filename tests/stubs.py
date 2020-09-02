@@ -83,8 +83,13 @@ def stub_add_tags_to_resource(stubber, name: str, tags: List[Dict]):
 
 
 def stub_describe_stack(
-    stubber, stack_name: str, status: str, use_stack_id: bool = False
-):
+    stubber,
+    stack_name: str,
+    status: str,
+    use_stack_id: bool = False,
+    parameters: Optional[Dict[str, str]] = None,
+    tags: Optional[Dict[str, str]] = None,
+):  # pylint: disable=too-many-arguments
     """Stubs CloudFormation describe_stacks responses"""
     stack_id = generate_stack_id(stack_name)
     response = {
@@ -101,6 +106,17 @@ def stub_describe_stack(
     stack_name_param = stack_name
     if use_stack_id:
         stack_name_param = stack_id
+
+    if parameters:
+        response["Stacks"][0]["Parameters"] = [
+            {"ParameterKey": key, "ParameterValue": value}
+            for key, value in parameters.items()
+        ]
+
+    if tags:
+        response["Stacks"][0]["Tags"] = [
+            {"Key": key, "Value": value} for key, value in tags.items()
+        ]
 
     stubber.add_response(
         "describe_stacks",

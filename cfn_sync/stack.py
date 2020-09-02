@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import TYPE_CHECKING, Callable, Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
 
 from botocore.exceptions import ClientError  # type: ignore
 
@@ -33,7 +33,6 @@ SUCCESSFUL_STACK_STATUSES = frozenset(
 DEFAULT_WAIT_DELAY = 5
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 
 def log_event(
@@ -45,11 +44,6 @@ def log_event(
         log_message += f" - {status_reason}"
 
     logger.info(log_message)
-
-
-def log(message: str):
-    """Logs a general message"""
-    logger.info(message)
 
 
 def parameter_dict_to_list(parameters: Dict[str, str]) -> List[ParameterTypeDef]:
@@ -66,10 +60,11 @@ def tag_dict_to_list(tags: Dict[str, str]) -> List[TagTypeDef]:
 
 
 class Stack:
-    """Class that holds information about a CloudFormation stack, and can perform updates to it"""
+    """Class that holds information about a CloudFormation stack"""
 
+    cloudformation: CloudFormationClient
     name: str
-    id: Optional[str]
+    id: Optional[str] = None
     capabilities: Optional[List] = None
     wait_delay: int
 
@@ -84,87 +79,44 @@ class Stack:
         self.wait_delay = wait_delay
 
     @property
+    def identifier(self) -> str:
+        """Retrieves the stack's best known identifier (StackId preference, Name fallback)"""
+        return self.id or self.name
+
+    @property
     def status(self) -> str:
         """Retrieves the stack's current status"""
-        return self.__describe()["StackStatus"]
+        return self.describe()["StackStatus"]
+
+    @property
+    def parameters(self) -> Dict[str, str]:
+        """Retrieves the stack's current parameters"""
+        return {
+            row["ParameterKey"]: row["ParameterValue"]
+            for row in self.describe().get("Parameters", [])
+        }
+
+    @property
+    def tags(self) -> Dict[str, str]:
+        """Retrieves the stack's current tags"""
+        return {row["Key"]: row["Value"] for row in self.describe().get("Tags", [])}
 
     @property
     def exists(self) -> bool:
         """Checks if the stack currently exists or not"""
         try:
-            self.__describe()
+            self.describe()
 
             return True
         except ClientError as exception:
-            exception_message = str(exception)
-
-            if "does not exist" in exception_message:
+            if "does not exist" in str(exception):
                 return False
 
-            raise exception
+            raise
 
     def set_capabilities(self, capabilities: List):
         """Sets the capabilities to apply to the stack during deploy [create/update] actions"""
         self.capabilities = capabilities
-
-    def deploy(
-        self,
-        template_body: str,
-        parameters: Dict,
-        tags: Dict,
-        wait: bool = True,
-    ):
-        """Performs a create/update against the stack and optionally waits for it to stabilise"""
-        try:
-            if self.exists:
-                logger.debug("Stack exists - setting method to update_stack")
-                method: Callable = self.cloudformation.update_stack
-            else:
-                logger.debug("Stack does not exist - setting method to create_stack")
-                method = self.cloudformation.create_stack
-
-            response = method(
-                StackName=self.name,
-                TemplateBody=template_body,
-                Parameters=parameter_dict_to_list(parameters),
-                Tags=tag_dict_to_list(tags),
-                Capabilities=self.capabilities or [],
-            )
-            self.id = response["StackId"]
-        except ClientError as client_error:
-            if (
-                client_error.response["Error"]["Message"]
-                == "No updates are to be performed."
-            ):
-                log(f"No changes. Stack {self.name} not updated")
-                return
-
-            raise client_error
-
-        if wait:
-            self.wait()
-
-            stack_status = self.status
-
-            if stack_status not in SUCCESSFUL_STACK_STATUSES:
-                raise Exception(
-                    f"Stack did not deploy successfully: {self.name} is in {stack_status} status"
-                )
-
-    def delete(self, wait: bool = True):
-        """Performs a delete against the stack and optionally waits for it to complete"""
-        self.id = self.__describe()["StackId"]
-        self.cloudformation.delete_stack(StackName=self.name)
-
-        if wait:
-            self.wait()
-
-            stack_status = self.status
-
-            if stack_status not in SUCCESSFUL_STACK_STATUSES:
-                raise Exception(
-                    f"Stack did not delete successfully: {self.name} is in {stack_status} status"
-                )
 
     def wait(self):
         """Waits for a stack create/update to complete, logging each event while waiting"""
@@ -200,18 +152,14 @@ class Stack:
 
     def events(self) -> Dict:
         """Get the first page of events for the stack"""
-        described_name = getattr(self, "id", self.name)
-
         stack_events = self.cloudformation.describe_stack_events(
-            StackName=described_name
+            StackName=self.identifier
         )
 
         return stack_events["StackEvents"]  # type: ignore
 
-    def __describe(self) -> Dict:
+    def describe(self) -> Dict:
         """Call CloudFormation DescribeStack"""
-        described_name = getattr(self, "id", self.name)
-
-        stack_data = self.cloudformation.describe_stacks(StackName=described_name)
+        stack_data = self.cloudformation.describe_stacks(StackName=self.identifier)
 
         return stack_data["Stacks"][0]  # type: ignore

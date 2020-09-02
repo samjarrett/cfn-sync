@@ -9,7 +9,8 @@ from typing import Dict, List, Optional
 import boto3
 from botocore.exceptions import ClientError  # type: ignore
 
-from .cloudformation import Stack
+from . import deleter, direct_deployer
+from .stack import Stack
 
 
 class ParseDict(argparse.Action):
@@ -44,12 +45,12 @@ def deploy(
     if capabilities:
         stack.set_capabilities(capabilities)
 
-    stack.deploy(template_file.read(), parameters, tags)
+    direct_deployer.deploy(stack, template_file.read(), parameters, tags)
 
 
 def delete(stack: Stack):
     """Delete the CloudFormation stack"""
-    stack.delete()
+    deleter.delete(stack)
 
 
 def main():
