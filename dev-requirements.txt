@@ -15,7 +15,7 @@ click==7.1.2              # via black
 coverage==5.1             # via pytest-cov
 docutils==0.15.2          # via -r requirements.txt, botocore
 iniconfig==1.0.1          # via pytest
-isort==5.5.2              # via -r dev-requirements.in, pylint
+isort==5.5.3              # via -r dev-requirements.in, pylint
 jmespath==0.9.5           # via -r requirements.txt, boto3, botocore
 lazy-object-proxy==1.4.3  # via astroid
 mccabe==0.6.1             # via pylint
