@@ -21,7 +21,7 @@ mccabe==0.6.1             # via pylint
 mypy-boto3-cloudformation==1.12.41.0  # via -r requirements.txt, boto3-stubs
 mypy-boto3==1.12.41.0     # via -r requirements.txt, boto3-stubs
 mypy-extensions==0.4.3    # via black, mypy
-mypy==0.782               # via -r dev-requirements.in
+mypy==0.790               # via -r dev-requirements.in
 packaging==20.3           # via pytest
 pathspec==0.8.0           # via black
 pluggy==0.13.1            # via pytest
