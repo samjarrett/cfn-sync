@@ -5,8 +5,8 @@
 #    pip-compile requirements.in
 #
 boto3-stubs[cloudformation]==1.12.41.0  # via -r requirements.in
-boto3==1.15.18            # via -r requirements.in, mypy-boto3
-botocore==1.18.18         # via boto3, s3transfer
+boto3==1.16.4             # via -r requirements.in, mypy-boto3
+botocore==1.19.4          # via boto3, s3transfer
 jmespath==0.9.5           # via boto3, botocore
 mypy-boto3-cloudformation==1.12.41.0  # via boto3-stubs
 mypy-boto3==1.12.41.0     # via boto3-stubs
