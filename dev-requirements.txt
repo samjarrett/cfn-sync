@@ -9,8 +9,8 @@ astroid==2.4.2            # via pylint
 attrs==20.3.0             # via pytest
 black==20.8b1             # via -r dev-requirements.in
 boto3-stubs[cloudformation]==1.12.41.0  # via -r requirements.txt
-boto3==1.16.18            # via -r requirements.txt, mypy-boto3
-botocore==1.19.18         # via -r requirements.txt, boto3, s3transfer
+boto3==1.16.23            # via -r requirements.txt, mypy-boto3
+botocore==1.19.23         # via -r requirements.txt, boto3, s3transfer
 click==7.1.2              # via black
 coverage==5.3             # via pytest-cov
 iniconfig==1.1.1          # via pytest
