@@ -14,7 +14,7 @@ botocore==1.19.43         # via -r requirements.txt, boto3, s3transfer
 click==7.1.2              # via black
 coverage==5.3             # via pytest-cov
 iniconfig==1.1.1          # via pytest
-isort==5.6.4              # via -r dev-requirements.in, pylint
+isort==5.7.0              # via -r dev-requirements.in, pylint
 jmespath==0.9.5           # via -r requirements.txt, boto3, botocore
 lazy-object-proxy==1.4.3  # via astroid
 mccabe==0.6.1             # via pylint
