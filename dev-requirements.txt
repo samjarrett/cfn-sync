@@ -4,38 +4,108 @@
 #
 #    pip-compile dev-requirements.in
 #
-appdirs==1.4.4            # via black
-astroid==2.4.2            # via pylint
-attrs==20.3.0             # via pytest
-black==20.8b1             # via -r dev-requirements.in
-boto3-stubs[cloudformation]==1.12.41.0  # via -r requirements.txt
-boto3==1.16.56            # via -r requirements.txt, mypy-boto3
-botocore==1.19.56         # via -r requirements.txt, boto3, s3transfer
-click==7.1.2              # via black
-coverage==5.3             # via pytest-cov
-iniconfig==1.1.1          # via pytest
-isort==5.7.0              # via -r dev-requirements.in, pylint
-jmespath==0.9.5           # via -r requirements.txt, boto3, botocore
-lazy-object-proxy==1.4.3  # via astroid
-mccabe==0.6.1             # via pylint
-mypy-boto3-cloudformation==1.12.41.0  # via -r requirements.txt, boto3-stubs
-mypy-boto3==1.12.41.0     # via -r requirements.txt, boto3-stubs
-mypy-extensions==0.4.3    # via black, mypy
-mypy==0.790               # via -r dev-requirements.in
-packaging==20.4           # via pytest
-pathspec==0.8.1           # via black
-pluggy==0.13.1            # via pytest
-py==1.9.0                 # via pytest
-pylint==2.6.0             # via -r dev-requirements.in
-pyparsing==2.4.7          # via packaging
-pytest-cov==2.11.0        # via -r dev-requirements.in
-pytest==6.2.1             # via -r dev-requirements.in, pytest-cov
-python-dateutil==2.8.1    # via -r requirements.txt, botocore
-regex==2020.10.28         # via black
-s3transfer==0.3.3         # via -r requirements.txt, boto3
-six==1.14.0               # via -r requirements.txt, astroid, packaging, python-dateutil
-toml==0.10.2              # via black, pylint, pytest
-typed-ast==1.4.1          # via black, mypy
-typing-extensions==3.7.4.3  # via black, mypy
-urllib3==1.25.9           # via -r requirements.txt, botocore
-wrapt==1.12.1             # via astroid
+appdirs==1.4.4
+    # via black
+astroid==2.4.2
+    # via pylint
+attrs==20.3.0
+    # via pytest
+black==20.8b1
+    # via -r dev-requirements.in
+boto3-stubs[cloudformation]==1.12.41.0
+    # via -r requirements.txt
+boto3==1.16.56
+    # via
+    #   -r requirements.txt
+    #   mypy-boto3
+botocore==1.19.56
+    # via
+    #   -r requirements.txt
+    #   boto3
+    #   s3transfer
+click==7.1.2
+    # via black
+coverage==5.3
+    # via pytest-cov
+iniconfig==1.1.1
+    # via pytest
+isort==5.7.0
+    # via
+    #   -r dev-requirements.in
+    #   pylint
+jmespath==0.9.5
+    # via
+    #   -r requirements.txt
+    #   boto3
+    #   botocore
+lazy-object-proxy==1.4.3
+    # via astroid
+mccabe==0.6.1
+    # via pylint
+mypy-boto3-cloudformation==1.12.41.0
+    # via
+    #   -r requirements.txt
+    #   boto3-stubs
+mypy-boto3==1.12.41.0
+    # via
+    #   -r requirements.txt
+    #   boto3-stubs
+mypy-extensions==0.4.3
+    # via
+    #   black
+    #   mypy
+mypy==0.790
+    # via -r dev-requirements.in
+packaging==20.4
+    # via pytest
+pathspec==0.8.1
+    # via black
+pluggy==0.13.1
+    # via pytest
+py==1.9.0
+    # via pytest
+pylint==2.6.0
+    # via -r dev-requirements.in
+pyparsing==2.4.7
+    # via packaging
+pytest-cov==2.11.0
+    # via -r dev-requirements.in
+pytest==6.2.2
+    # via
+    #   -r dev-requirements.in
+    #   pytest-cov
+python-dateutil==2.8.1
+    # via
+    #   -r requirements.txt
+    #   botocore
+regex==2020.10.28
+    # via black
+s3transfer==0.3.3
+    # via
+    #   -r requirements.txt
+    #   boto3
+six==1.14.0
+    # via
+    #   -r requirements.txt
+    #   astroid
+    #   packaging
+    #   python-dateutil
+toml==0.10.2
+    # via
+    #   black
+    #   pylint
+    #   pytest
+typed-ast==1.4.1
+    # via
+    #   black
+    #   mypy
+typing-extensions==3.7.4.3
+    # via
+    #   black
+    #   mypy
+urllib3==1.25.9
+    # via
+    #   -r requirements.txt
+    #   botocore
+wrapt==1.12.1
+    # via astroid
