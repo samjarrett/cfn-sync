@@ -54,7 +54,7 @@ mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.790
+mypy==0.800
     # via -r dev-requirements.in
 packaging==20.4
     # via pytest
