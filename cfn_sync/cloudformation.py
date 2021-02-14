@@ -1,9 +1,13 @@
 import logging
 import time
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional
 
 from botocore.exceptions import ClientError  # type: ignore
-from mypy_boto3_cloudformation import CloudFormationClient
+
+if TYPE_CHECKING:  # pragma: no cover
+    from mypy_boto3_cloudformation.client import CloudFormationClient
+else:
+    CloudFormationClient = object
 
 IN_PROGRESS_STACK_STATUSES = frozenset(
     {
@@ -94,10 +98,10 @@ class Stack:
         try:
             if self.exists:
                 logger.debug("Stack exists - setting method to update_stack")
-                method = self.cloudformation.update_stack
+                method: Callable = self.cloudformation.update_stack
             else:
                 logger.debug("Stack does not exist - setting method to create_stack")
-                method = self.cloudformation.create_stack  # type: ignore
+                method = self.cloudformation.create_stack
 
             response = method(
                 StackName=self.name,

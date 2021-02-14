@@ -5,3 +5,5 @@ mypy
 pylint<2.8.0
 pytest
 pytest-cov
+
+boto3-stubs[cloudformation]
