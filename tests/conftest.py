@@ -12,7 +12,7 @@ os.environ["AWS_EC2_METADATA_DISABLED"] = "true"
 StubbedClient = namedtuple("StubbedClient", ["stub", "client"])
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def fake_cloudformation_client() -> StubbedClient:
     """Creates a stubbed boto3 CloudFormation client"""
     cloudformation = boto3.client("cloudformation")
@@ -21,7 +21,7 @@ def fake_cloudformation_client() -> StubbedClient:
         stubbed_client.assert_no_pending_responses()
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def demo_template():
     """Returns the contents of demo.yml"""
     dirname = os.path.dirname(__file__)
