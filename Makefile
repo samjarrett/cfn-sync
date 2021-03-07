@@ -3,7 +3,7 @@ FILES := cfn_sync tests setup.py
 lint:
 	pylint ${FILES}
 	black --check ${FILES}
-	isort --recursive ${FILES} --check-only
+	isort ${FILES} --check-only
 
 test:
 	pytest --cov cfn_sync
@@ -11,5 +11,5 @@ test:
 
 fix:
 	black ${FILES}
-	isort --recursive ${FILES}
+	isort ${FILES}
 	$(MAKE) lint
