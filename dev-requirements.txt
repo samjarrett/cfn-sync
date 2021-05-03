@@ -10,7 +10,7 @@ astroid==2.5.6
     # via pylint
 attrs==20.3.0
     # via pytest
-black==21.4b0
+black==21.4b2
     # via -r dev-requirements.in
 boto3-stubs[cloudformation]==1.17.57.0
     # via -r dev-requirements.in
