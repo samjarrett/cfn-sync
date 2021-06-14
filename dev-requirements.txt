@@ -46,7 +46,7 @@ mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.812
+mypy==0.902
     # via -r dev-requirements.in
 packaging==20.9
     # via pytest
@@ -83,11 +83,10 @@ six==1.15.0
 toml==0.10.2
     # via
     #   black
+    #   mypy
     #   pylint
     #   pytest
     #   pytest-cov
-typed-ast==1.4.2
-    # via mypy
 typing-extensions==3.7.4.3
     # via mypy
 urllib3==1.26.5
