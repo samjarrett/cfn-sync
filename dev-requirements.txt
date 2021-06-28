@@ -12,17 +12,17 @@ attrs==20.3.0
     # via pytest
 black==21.6b0
     # via -r dev-requirements.in
-boto3-stubs[cloudformation]==1.17.97
-    # via -r dev-requirements.in
 boto3==1.17.98
     # via -r requirements.txt
-botocore-stubs==1.20.94
-    # via boto3-stubs
+boto3-stubs[cloudformation]==1.17.101.post1
+    # via -r dev-requirements.in
 botocore==1.20.98
     # via
     #   -r requirements.txt
     #   boto3
     #   s3transfer
+botocore-stubs==1.20.94
+    # via boto3-stubs
 click==7.1.2
     # via black
 coverage==5.5
@@ -42,14 +42,14 @@ lazy-object-proxy==1.5.2
     # via astroid
 mccabe==0.6.1
     # via pylint
-mypy-boto3-cloudformation==1.17.97
+mypy==0.902
+    # via -r dev-requirements.in
+mypy-boto3-cloudformation==1.17.101.post1
     # via boto3-stubs
 mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.902
-    # via -r dev-requirements.in
 packaging==20.9
     # via pytest
 pathspec==0.8.1
@@ -62,12 +62,12 @@ pylint==2.8.3
     # via -r dev-requirements.in
 pyparsing==2.4.7
     # via packaging
-pytest-cov==2.12.1
-    # via -r dev-requirements.in
 pytest==6.2.4
     # via
     #   -r dev-requirements.in
     #   pytest-cov
+pytest-cov==2.12.1
+    # via -r dev-requirements.in
 python-dateutil==2.8.1
     # via
     #   -r requirements.txt
