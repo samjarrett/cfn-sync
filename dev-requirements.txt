@@ -42,7 +42,7 @@ lazy-object-proxy==1.5.2
     # via astroid
 mccabe==0.6.1
     # via pylint
-mypy==0.902
+mypy==0.910
     # via -r dev-requirements.in
 mypy-boto3-cloudformation==1.17.102
     # via boto3-stubs
