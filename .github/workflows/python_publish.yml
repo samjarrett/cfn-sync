@@ -1,0 +1,60 @@
+name: Test & Publish 📦 to PyPI
+
+on: [push, pull_request]
+
+env:
+  AWS_DEFAULT_REGION: ap-southeast-2
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r dev-requirements.txt
+
+      - name: Run lint
+        run: make lint
+
+      - name: Run tests
+        run: make test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      python_version: 3.8
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ env.python_version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.python_version }}
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build~=0.5.1
+
+      - name: Build a binary wheel and a source tarball
+        run: python -m build --sdist --wheel --outdir dist/ .
+
+      - name: Publish distribution 📦 to PyPI
+        if: startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

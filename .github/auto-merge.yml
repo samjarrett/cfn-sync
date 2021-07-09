@@ -1,0 +1,5 @@
+---
+requiredLabels:
+  - dependencies
+
+reportStatus: true
