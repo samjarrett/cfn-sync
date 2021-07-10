@@ -10,6 +10,7 @@ from cfn_sync.stack import Stack
 
 # prevent boto from looking for IAM creds via metadata while running tests
 os.environ["AWS_EC2_METADATA_DISABLED"] = "true"
+os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
 
 
 StubbedClient = namedtuple("StubbedClient", ["stub", "client"])
