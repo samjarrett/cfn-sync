@@ -26,7 +26,7 @@ if __name__ == "__main__":
             packages=find_packages(exclude=["tests"]),
             include_package_data=True,
             package_data={"cfn_sync": ["py.typed"]},
-            entry_points={"console_scripts": ["cfn-sync = cfn_sync:main"]},
+            entry_points={"console_scripts": ["cfn-sync = cfn_sync.cli:main"]},
             setup_requires=["setuptools >= 18.0", "setuptools_scm"],
             install_requires=requirements.readlines(),
             test_suite="tests",
