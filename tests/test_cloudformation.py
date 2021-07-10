@@ -1,4 +1,6 @@
 # pylint:disable=redefined-outer-name
+from unittest.mock import MagicMock, patch
+
 import pytest
 from botocore.exceptions import ClientError  # type: ignore
 
@@ -262,13 +264,52 @@ def test_deploy_wait_failure(
         stack.deploy(demo_template, {"Hello": "You"}, {"MyTag": "TagValue"}, True)
 
 
+@patch("time.sleep")
+def test_wait_delay(
+    patched_sleep: MagicMock,
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
+):
+    """Tests Stack.wait_delay and Stack.wait()"""
+    # test default is 5 sec
+    def perform_wait(
+        stack: cloudformation.Stack, fake_cloudformation_client: StubbedClient
+    ):
+        stub_describe_stack(
+            fake_cloudformation_client.stub, "MyStack", "CREATE_IN_PROGRESS"
+        )
+        stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
+        stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
+        stub_describe_stack(
+            fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE"
+        )
+        stack.wait()
+
+    perform_wait(stack, fake_cloudformation_client)
+    patched_sleep.assert_called_once_with(5)
+
+    patched_sleep.reset_mock()
+    stack.wait_delay = 30
+    perform_wait(stack, fake_cloudformation_client)
+    patched_sleep.assert_called_once_with(30)
+
+    patched_sleep.reset_mock()
+    stack.wait_delay = 300
+    perform_wait(stack, fake_cloudformation_client)
+    patched_sleep.assert_called_once_with(300)
+
+
+@patch("time.sleep")
 def test_wait_success(
-    fake_cloudformation_client: StubbedClient, stack: cloudformation.Stack
+    patched_sleep: MagicMock,
+    fake_cloudformation_client: StubbedClient,
+    stack: cloudformation.Stack,
 ):
     """Tests Stack.wait() success cases"""
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
     stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
     stack.wait()
+    patched_sleep.assert_not_called()
 
     stub_describe_stack(
         fake_cloudformation_client.stub, "MyStack", "CREATE_IN_PROGRESS"
@@ -277,3 +318,4 @@ def test_wait_success(
     stub_describe_stack_events(fake_cloudformation_client.stub, "MyStack")
     stub_describe_stack(fake_cloudformation_client.stub, "MyStack", "CREATE_COMPLETE")
     stack.wait()
+    patched_sleep.assert_called_once()

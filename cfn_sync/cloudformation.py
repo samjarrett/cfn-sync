@@ -27,6 +27,7 @@ IN_PROGRESS_STACK_STATUSES = frozenset(
 SUCCESSFUL_STACK_STATUSES = frozenset(
     {"CREATE_COMPLETE", "UPDATE_COMPLETE", "IMPORT_COMPLETE", "DELETE_COMPLETE"}
 )
+DEFAULT_WAIT_DELAY = 5
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -54,14 +55,17 @@ class Stack:
     name: str
     id: Optional[str]
     capabilities: Optional[List] = None
+    wait_delay: int
 
     def __init__(
         self,
         cloudformation: CloudFormationClient,
         name: str,
+        wait_delay: int = DEFAULT_WAIT_DELAY,
     ):
         self.cloudformation = cloudformation
         self.name = name
+        self.wait_delay = wait_delay
 
     @property
     def status(self) -> str:
@@ -164,7 +168,7 @@ class Stack:
             )
 
         while stack_status in IN_PROGRESS_STACK_STATUSES:
-            time.sleep(5)
+            time.sleep(self.wait_delay)
 
             events = filter(
                 lambda event: event["EventId"] not in event_ids,
