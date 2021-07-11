@@ -17,7 +17,7 @@ StubbedClient = namedtuple("StubbedClient", ["stub", "client"])
 
 
 @pytest.fixture
-def fake_cloudformation_client() -> StubbedClient:
+def fake_cloudformation_client() -> StubbedClient:  # type: ignore
     """Creates a stubbed boto3 CloudFormation client"""
     cloudformation = boto3.client("cloudformation")
     with Stubber(cloudformation) as stubbed_client:

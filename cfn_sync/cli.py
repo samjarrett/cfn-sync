@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 import boto3
 from botocore.exceptions import ClientError  # type: ignore
 
-from . import deleter, direct_deployer
+from . import deleter, direct_deployer, change_set_deployer
 from .stack import Stack
 
 
@@ -38,12 +38,17 @@ def deploy(
     parameters: Dict[str, str],
     tags: Dict[str, str],
     capabilities: List,
+    use_change_set: bool = False,
 ):
     """Deploy the CloudFormation stack"""
     if capabilities:
         stack.set_capabilities(capabilities)
 
-    direct_deployer.deploy(stack, template_file.read(), parameters, tags)
+    method = direct_deployer.deploy
+    if use_change_set:
+        method = change_set_deployer.deploy
+
+    method(stack, template_file.read(), parameters, tags)
 
 
 def delete(stack: Stack):
@@ -105,6 +110,12 @@ def parse_args(args=None) -> argparse.Namespace:
         help="A list of capabilities that you must specify before AWS Cloudformation can create certain stacks.",
         default=[],
     )
+    parser_deploy.add_argument(
+        "--use-change-set",
+        action="store_true",
+        help="Should the executor use change sets to perform the update?",
+        default=False,
+    )
 
     parser_delete = subparsers.add_parser("delete", help="Delete CloudFormation stack")
     parser_delete.set_defaults(func=delete)
@@ -120,8 +131,11 @@ def parse_args(args=None) -> argparse.Namespace:
 
 def main():
     """The main CLI entrypoint"""
+    cloudformation = boto3.client("cloudformation")
     logging.basicConfig(
-        datefmt="%Y-%m-%d %H:%M", format="[%(asctime)s] %(levelname)-2s: %(message)s"
+        datefmt="%Y-%m-%d %H:%M",
+        format="[%(asctime)s] %(levelname)-2s: %(message)s",
+        level=logging.INFO,
     )
 
     args = vars(parse_args())
@@ -130,7 +144,7 @@ def main():
     func = args.pop("func")
     stack_name = args.pop("stack_name")
 
-    stack = Stack(boto3.client("cloudformation"), stack_name)
+    stack = Stack(cloudformation, stack_name)
 
     try:
         func(stack=stack, **args)
