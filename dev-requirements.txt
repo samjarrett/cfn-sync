@@ -12,11 +12,11 @@ attrs==20.3.0
     # via pytest
 black==21.6b0
     # via -r dev-requirements.in
-boto3==1.18.0
+boto3==1.18.1
     # via -r requirements.txt
 boto3-stubs[cloudformation]==1.18.1
     # via -r dev-requirements.in
-botocore==1.21.0
+botocore==1.21.1
     # via
     #   -r requirements.txt
     #   boto3
