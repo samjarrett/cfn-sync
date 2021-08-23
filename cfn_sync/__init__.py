@@ -92,7 +92,7 @@ def main():
         " must specify parameters that don't have a default value. Syntax: ParameterKey1=ParameterValue1"
         " ParameterKey2=ParameterValue2",
         metavar="ParameterKey=ParameterValue",
-        default=dict(),
+        default={},
     )
     parser_deploy.add_argument(
         "--tags",
@@ -101,7 +101,7 @@ def main():
         help="A list of tags to associate with the stack that is created or updated. AWS CloudFormation also propagates"
         " these tags to resources in the stack if the resource supports it. Syntax:TagKey1=TagValue1 TagKey2=TagValue2",
         metavar="TagKey=TagValue",
-        default=dict(),
+        default={},
     )
     parser_deploy.add_argument(
         "--capabilities",

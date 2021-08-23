@@ -25,5 +25,5 @@ def fake_cloudformation_client() -> StubbedClient:
 def demo_template():
     """Returns the contents of demo.yml"""
     dirname = os.path.dirname(__file__)
-    with open(f"{dirname}/demo.yml", "r") as template_file:
+    with open(f"{dirname}/demo.yml", "r", encoding="utf-8") as template_file:
         yield template_file.read()
