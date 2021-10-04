@@ -23,7 +23,7 @@ botocore-stubs==1.20.94
     # via boto3-stubs
 click==7.1.2
     # via black
-coverage==5.5
+coverage[toml]==5.5
     # via pytest-cov
 iniconfig==1.1.1
     # via pytest
@@ -68,7 +68,7 @@ pytest==6.2.5
     # via
     #   -r dev-requirements.in
     #   pytest-cov
-pytest-cov==2.12.1
+pytest-cov==3.0.0
     # via -r dev-requirements.in
 python-dateutil==2.8.1
     # via
@@ -86,10 +86,10 @@ six==1.15.0
     #   python-dateutil
 toml==0.10.2
     # via
+    #   coverage
     #   mypy
     #   pylint
     #   pytest
-    #   pytest-cov
 tomli==1.0.4
     # via black
 typing-extensions==3.10.0.1
