@@ -27,7 +27,7 @@ coverage[toml]==5.5
     # via pytest-cov
 iniconfig==1.1.1
     # via pytest
-isort==5.9.3
+isort==5.10.0
     # via
     #   -r dev-requirements.in
     #   pylint
