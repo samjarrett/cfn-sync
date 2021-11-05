@@ -12,7 +12,7 @@ black==21.10b0
     # via -r dev-requirements.in
 boto3==1.19.11
     # via -r requirements.txt
-boto3-stubs[cloudformation]==1.19.10
+boto3-stubs[cloudformation]==1.19.11
     # via -r dev-requirements.in
 botocore==1.22.11
     # via
