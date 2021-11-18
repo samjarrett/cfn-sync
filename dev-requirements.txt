@@ -4,26 +4,26 @@
 #
 #    pip-compile dev-requirements.in
 #
-astroid==2.8.0
+astroid==2.8.5
     # via pylint
-attrs==20.3.0
+attrs==21.2.0
     # via pytest
 black==21.11b0
     # via -r dev-requirements.in
-boto3==1.20.7
-    # via -r requirements.txt
 boto3-stubs[cloudformation]==1.20.8
     # via -r dev-requirements.in
+boto3==1.20.7
+    # via -r requirements.txt
+botocore-stubs==1.23.8
+    # via boto3-stubs
 botocore==1.23.7
     # via
     #   -r requirements.txt
     #   boto3
     #   s3transfer
-botocore-stubs==1.20.94
-    # via boto3-stubs
-click==7.1.2
+click==8.0.3
     # via black
-coverage[toml]==5.5
+coverage[toml]==6.1.2
     # via pytest-cov
 iniconfig==1.1.1
     # via pytest
@@ -36,45 +36,45 @@ jmespath==0.10.0
     #   -r requirements.txt
     #   boto3
     #   botocore
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.6.0
     # via astroid
 mccabe==0.6.1
     # via pylint
-mypy==0.910
-    # via -r dev-requirements.in
-mypy-boto3-cloudformation==1.20.0
+mypy-boto3-cloudformation==1.20.1
     # via boto3-stubs
 mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-packaging==20.9
+mypy==0.910
+    # via -r dev-requirements.in
+packaging==21.3
     # via pytest
 pathspec==0.9.0
     # via black
-platformdirs==2.2.0
+platformdirs==2.4.0
     # via
     #   black
     #   pylint
-pluggy==0.13.1
+pluggy==1.0.0
     # via pytest
-py==1.10.0
+py==1.11.0
     # via pytest
 pylint==2.11.1
     # via -r dev-requirements.in
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
+pytest-cov==3.0.0
+    # via -r dev-requirements.in
 pytest==6.2.5
     # via
     #   -r dev-requirements.in
     #   pytest-cov
-pytest-cov==3.0.0
-    # via -r dev-requirements.in
 python-dateutil==2.8.1
     # via
     #   -r requirements.txt
     #   botocore
-regex==2020.11.13
+regex==2021.11.10
     # via black
 s3transfer==0.5.0
     # via
@@ -86,23 +86,25 @@ six==1.15.0
     #   python-dateutil
 toml==0.10.2
     # via
-    #   coverage
     #   mypy
     #   pylint
     #   pytest
-tomli==1.0.4
-    # via black
-typing-extensions==3.10.0.1
+tomli==1.2.2
+    # via
+    #   black
+    #   coverage
+typing-extensions==4.0.0
     # via
     #   astroid
     #   black
-    #   boto3-stubs
     #   mypy
-    #   mypy-boto3-cloudformation
     #   pylint
 urllib3==1.26.5
     # via
     #   -r requirements.txt
     #   botocore
-wrapt==1.12.1
+wrapt==1.13.3
     # via astroid
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
