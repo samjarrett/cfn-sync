@@ -8,7 +8,7 @@ astroid==2.8.0
     # via pylint
 attrs==20.3.0
     # via pytest
-black==21.10b0
+black==21.11b1
     # via -r dev-requirements.in
 boto3==1.20.8
     # via -r requirements.txt
@@ -74,7 +74,7 @@ python-dateutil==2.8.1
     # via
     #   -r requirements.txt
     #   botocore
-regex==2020.11.13
+regex==2021.11.10
     # via black
 s3transfer==0.5.0
     # via
