@@ -40,7 +40,7 @@ lazy-object-proxy==1.5.2
     # via astroid
 mccabe==0.6.1
     # via pylint
-mypy==0.910
+mypy==0.920
     # via -r dev-requirements.in
 mypy-boto3-cloudformation==1.20.0
     # via boto3-stubs
@@ -85,11 +85,12 @@ six==1.15.0
 toml==0.10.2
     # via
     #   coverage
-    #   mypy
     #   pylint
     #   pytest
-tomli==1.0.4
-    # via black
+tomli==1.2.3
+    # via
+    #   black
+    #   mypy
 typing-extensions==3.10.0.1
     # via
     #   astroid
