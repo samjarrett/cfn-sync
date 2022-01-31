@@ -8,7 +8,7 @@ astroid==2.9.0
     # via pylint
 attrs==20.3.0
     # via pytest
-black==21.12b0
+black==22.1.0
     # via -r dev-requirements.in
 boto3==1.20.45
     # via -r requirements.txt
@@ -21,7 +21,7 @@ botocore==1.23.45
     #   s3transfer
 botocore-stubs==1.20.94
     # via boto3-stubs
-click==7.1.2
+click==8.0.3
     # via black
 coverage[toml]==5.5
     # via pytest-cov
