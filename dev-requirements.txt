@@ -64,7 +64,7 @@ pylint==2.12.2
     # via -r dev-requirements.in
 pyparsing==2.4.7
     # via packaging
-pytest==6.2.5
+pytest==7.0.0
     # via
     #   -r dev-requirements.in
     #   pytest-cov
@@ -86,11 +86,11 @@ toml==0.10.2
     # via
     #   coverage
     #   pylint
-    #   pytest
 tomli==1.2.3
     # via
     #   black
     #   mypy
+    #   pytest
 typing-extensions==3.10.0.1
     # via
     #   astroid
