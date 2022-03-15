@@ -1,6 +1,6 @@
 name: Test & Publish 📦 to PyPI
 
-on: [push, pull_request]
+on: [push]
 
 env:
   AWS_DEFAULT_REGION: ap-southeast-2
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
       - uses: actions/checkout@v3
