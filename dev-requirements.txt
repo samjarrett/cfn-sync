@@ -12,7 +12,7 @@ black==22.1.0
     # via -r dev-requirements.in
 boto3==1.21.24
     # via -r requirements.txt
-boto3-stubs[cloudformation]==1.21.23
+boto3-stubs[cloudformation]==1.21.23.post2
     # via -r dev-requirements.in
 botocore==1.24.24
     # via
@@ -91,7 +91,7 @@ tomli==1.2.3
     #   black
     #   mypy
     #   pytest
-typing-extensions==3.10.0.1
+typing-extensions==4.1.1
     # via
     #   astroid
     #   black
