@@ -2,7 +2,7 @@
 black
 isort
 mypy
-pylint<2.13.0
+pylint<2.14.0
 pytest
 pytest-cov
 
