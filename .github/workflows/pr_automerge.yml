@@ -1,0 +1,20 @@
+name: Enable automerge
+
+on: 
+  pull_request_target: ~
+
+jobs:
+  automerge:
+    runs-on: ubuntu-20.04
+    if: ${{ github.actor == 'dependabot[bot]' }}
+
+    permissions:
+      contents: 'write'
+      pull-requests: 'write'
+
+    steps:
+      - name: Enable Automerge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
