@@ -31,7 +31,7 @@ exceptiongroup==1.0.0rc9
     # via pytest
 iniconfig==1.1.1
     # via pytest
-isort==5.11.4
+isort==5.12.0
     # via
     #   -r dev-requirements.in
     #   pylint
