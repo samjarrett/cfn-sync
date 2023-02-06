@@ -134,7 +134,7 @@ class Stack:
             stack_status = self.status
 
             if stack_status not in SUCCESSFUL_STACK_STATUSES:
-                raise Exception(
+                raise RuntimeError(
                     f"Stack did not deploy successfully: {self.name} is in {stack_status} status"
                 )
 
@@ -149,7 +149,7 @@ class Stack:
             stack_status = self.status
 
             if stack_status not in SUCCESSFUL_STACK_STATUSES:
-                raise Exception(
+                raise RuntimeError(
                     f"Stack did not delete successfully: {self.name} is in {stack_status} status"
                 )
 

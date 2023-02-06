@@ -271,6 +271,7 @@ def test_wait_delay(
     stack: cloudformation.Stack,
 ):
     """Tests Stack.wait_delay and Stack.wait()"""
+
     # test default is 5 sec
     def perform_wait(
         stack: cloudformation.Stack, fake_cloudformation_client: StubbedClient

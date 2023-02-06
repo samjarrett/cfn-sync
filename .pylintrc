@@ -9,8 +9,7 @@ jobs=0
 
 # Disable the message, report, category or checker with the given id(s).
 disable=missing-module-docstring,
-        too-few-public-methods,
-        bad-continuation
+        too-few-public-methods
 
 
 [FORMAT]
@@ -43,4 +42,3 @@ max-returns=3
 
 # Maximum number of statements in function / method body.
 max-statements=25
-
