@@ -44,11 +44,11 @@ lazy-object-proxy==1.5.2
     # via astroid
 mccabe==0.6.1
     # via pylint
-mypy==1.0.1
+mypy==1.1.1
     # via -r dev-requirements.in
 mypy-boto3-cloudformation==1.26.60
     # via boto3-stubs
-mypy-extensions==0.4.3
+mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
