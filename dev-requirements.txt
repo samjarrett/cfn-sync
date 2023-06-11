@@ -4,7 +4,7 @@
 #
 #    pip-compile dev-requirements.in
 #
-astroid==2.15.2
+astroid==2.15.5
     # via pylint
 black==23.3.0
     # via -r dev-requirements.in
@@ -62,7 +62,7 @@ platformdirs==2.2.0
     #   pylint
 pluggy==0.13.1
     # via pytest
-pylint==2.17.2
+pylint==2.17.4
     # via -r dev-requirements.in
 pytest==7.3.1
     # via
