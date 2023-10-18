@@ -100,7 +100,7 @@ typing-extensions==4.1.1
     #   mypy
     #   mypy-boto3-cloudformation
     #   pylint
-urllib3==1.26.17
+urllib3==1.26.18
     # via
     #   -r requirements.txt
     #   botocore
