@@ -10,8 +10,10 @@ black==23.11.0
     # via -r dev-requirements.in
 boto3==1.28.85
     # via -r requirements.txt
-boto3-stubs[cloudformation]==1.28.85
-    # via -r dev-requirements.in
+boto3-stubs[cloudformation]==1.29.0
+    # via
+    #   -r dev-requirements.in
+    #   boto3-stubs
 botocore==1.31.85
     # via
     #   -r requirements.txt
@@ -44,7 +46,7 @@ mccabe==0.6.1
     # via pylint
 mypy==1.7.0
     # via -r dev-requirements.in
-mypy-boto3-cloudformation==1.28.0
+mypy-boto3-cloudformation==1.29.0
     # via boto3-stubs
 mypy-extensions==1.0.0
     # via
