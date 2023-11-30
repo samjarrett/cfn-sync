@@ -8,13 +8,11 @@ astroid==3.0.1
     # via pylint
 black==23.11.0
     # via -r dev-requirements.in
-boto3==1.33.2
+boto3==1.33.4
     # via -r requirements.txt
 boto3-stubs[cloudformation]==1.33.2
-    # via
-    #   -r dev-requirements.in
-    #   boto3-stubs
-botocore==1.33.2
+    # via -r dev-requirements.in
+botocore==1.33.4
     # via
     #   -r requirements.txt
     #   boto3
@@ -76,7 +74,7 @@ python-dateutil==2.8.1
     # via
     #   -r requirements.txt
     #   botocore
-s3transfer==0.8.0
+s3transfer==0.8.2
     # via
     #   -r requirements.txt
     #   boto3
