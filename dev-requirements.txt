@@ -11,9 +11,7 @@ black==23.11.0
 boto3==1.33.10
     # via -r requirements.txt
 boto3-stubs[cloudformation]==1.33.11
-    # via
-    #   -r dev-requirements.in
-    #   boto3-stubs
+    # via -r dev-requirements.in
 botocore==1.33.10
     # via
     #   -r requirements.txt
@@ -64,7 +62,7 @@ platformdirs==2.2.0
     #   pylint
 pluggy==0.13.1
     # via pytest
-pylint==3.0.2
+pylint==3.0.3
     # via -r dev-requirements.in
 pytest==7.4.3
     # via
