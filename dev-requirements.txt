@@ -40,7 +40,7 @@ jmespath==0.10.0
     #   botocore
 mccabe==0.6.1
     # via pylint
-mypy==1.13.0
+mypy==1.14.0
     # via -r dev-requirements.in
 mypy-boto3-cloudformation==1.35.0
     # via boto3-stubs
