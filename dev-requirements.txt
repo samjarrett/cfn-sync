@@ -8,11 +8,11 @@ astroid==3.2.4
     # via pylint
 black==24.8.0
     # via -r dev-requirements.in
-boto3==1.35.86
+boto3==1.35.87
     # via -r requirements.txt
 boto3-stubs[cloudformation]==1.35.86
     # via -r dev-requirements.in
-botocore==1.35.86
+botocore==1.35.87
     # via
     #   -r requirements.txt
     #   boto3
