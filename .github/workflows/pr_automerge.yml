@@ -1,11 +1,11 @@
 name: Enable automerge
 
-on: 
+on:
   pull_request_target: ~
 
 jobs:
   automerge:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
 
     permissions:
