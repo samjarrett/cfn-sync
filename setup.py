@@ -5,10 +5,7 @@ Setup script.
 from setuptools import find_packages, setup
 
 if __name__ == "__main__":
-    with (
-        open("requirements.in", "r", encoding="utf-8") as requirements,
-        open("README.rst", "r", encoding="utf-8") as readme,
-    ):
+    with open("README.rst", "r", encoding="utf-8") as readme:
         setup(
             name="cfn-sync",
             use_scm_version=True,
@@ -33,6 +30,6 @@ if __name__ == "__main__":
             entry_points={"console_scripts": ["cfn-sync = cfn_sync:main"]},
             python_requires=">=3.9",
             setup_requires=["setuptools >= 18.0", "setuptools_scm"],
-            install_requires=requirements.readlines(),
+            install_requires=["boto3>=1.12.0"],
             test_suite="tests",
         )
