@@ -130,7 +130,7 @@ def stub_update_stack(
     parameters: List[Dict],
     tags: List[Dict],
     capabilities: Optional[List] = None,
-):  # pylint: disable=too-many-arguments
+):  # pylint: disable=too-many-arguments too-many-positional-arguments
     """Stubs CloudFormation update_stack responses"""
     response = {"StackId": generate_stack_id(stack_name)}
     stubber.add_response(
@@ -172,7 +172,7 @@ def stub_create_stack(
     parameters: List[Dict],
     tags: List[Dict],
     capabilities: Optional[List] = None,
-):  # pylint: disable=too-many-arguments
+):  # pylint: disable=too-many-arguments too-many-positional-arguments
     """Stubs CloudFormation create_stack responses"""
     response = {"StackId": generate_stack_id(stack_name)}
     stubber.add_response(
