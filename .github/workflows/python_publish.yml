@@ -22,7 +22,7 @@ jobs:
       UV_PYTHON: ${{ matrix.python-version }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Get uv version
         run: |
@@ -53,7 +53,7 @@ jobs:
       UV_PYTHON: "3.13"
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Get uv version
         run: |
