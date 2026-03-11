@@ -1,4 +1,4 @@
-FROM python:3.15.0a6-alpine@sha256:1f3d508838ef876fb62070f2080d469c234c6db03b7beeae5c84f6c8c810e664
+FROM python:3.15.0a7-alpine@sha256:20eb333d60f02f11e7190ee4fd43589fb32234c7891568a4e55657cc3e4b1157
 
 ENTRYPOINT [ "/usr/local/bin/cfn-sync" ]
 
