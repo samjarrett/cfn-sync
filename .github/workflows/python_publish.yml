@@ -30,7 +30,7 @@ jobs:
           echo "UV_VERSION=$UV_VERSION" >> "$GITHUB_ENV"
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           version: ${{ env.UV_VERSION }}
 
@@ -61,7 +61,7 @@ jobs:
           echo "UV_VERSION=$UV_VERSION" >> "$GITHUB_ENV"
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           version: ${{ env.UV_VERSION }}
 
